@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddReferalActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_gradient"/>
+
+    <ImageView
+        android:id="@+id/addreferal_closeImg"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/x_white"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/addreferal_mainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:text="Account Setup"
+        android:textSize="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/addreferal_mainTxt">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/addreferal_nameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="#b9b9b9"
+                android:text="Name"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/addreferal_nameEdit"
+                android:layout_below="@id/addreferal_nameTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingLeft="16dp"
+                android:backgroundTint="#b9b9b9"
+                android:textCursorDrawable="@null"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/addreferal_phoneTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="#b9b9b9"
+                android:layout_below="@id/addreferal_nameEdit"
+                android:text="Phone"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/addreferal_phoneEdit"
+                android:layout_below="@id/addreferal_phoneTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#b9b9b9"
+                android:paddingLeft="16dp"
+                android:textCursorDrawable="@null"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/addreferal_emailTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="#b9b9b9"
+                android:layout_below="@id/addreferal_phoneEdit"
+                android:text="Email"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/addreferal_emailEdit"
+                android:layout_below="@id/addreferal_emailTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#b9b9b9"
+                android:paddingLeft="16dp"
+                android:textCursorDrawable="@null"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/addreferal_additionalTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="#b9b9b9"
+                android:layout_below="@id/addreferal_emailEdit"
+                android:text="Additional Notes"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/addreferal_additionalEdit"
+                android:layout_below="@id/addreferal_additionalTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#b9b9b9"
+                android:paddingLeft="16dp"
+                android:textCursorDrawable="@null"
+                android:textColor="#ffffff"/>
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/add_float"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/addreferal_additionalEdit"
+                android:layout_marginBottom="50dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

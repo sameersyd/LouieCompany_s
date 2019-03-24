@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountSetupActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_gradient"/>
+
+    <TextView
+        android:id="@+id/accountsetup_mainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:text="Account Setup"
+        android:textSize="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"/>
+
+    <LinearLayout
+        android:id="@+id/accountsetup_selectionLayout"
+        android:layout_below="@id/accountsetup_mainTxt"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp">
+
+        <TextView
+            android:id="@+id/accountsetup_customerSelectTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="Customer"
+            android:textSize="16dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/accountsetup_selected"/>
+
+        <TextView
+            android:id="@+id/accountsetup_contractorSelectTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accountsetup_unselect"
+            android:text="Contractor"
+            android:textSize="16dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/accountsetup_unselected"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/accountsetup_customerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@id/accountsetup_selectionLayout">
+
+        <TextView
+            android:id="@+id/accountsetup_customer_paymentMethodTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:textColor="#a7a7a8"
+            android:text="Enter your payment method"
+            android:textSize="16dp"
+            android:layout_marginBottom="10dp"/>
+
+        <Spinner
+            android:id="@+id/accountsetup_customer_paymentMethodSpin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:paddingLeft="16dp"
+            android:layout_below="@id/accountsetup_customer_paymentMethodTxt"
+            android:background="@drawable/custom_edittext"/>
+
+        <TextView
+            android:id="@+id/accountsetup_customer_paypalTxt"
+            android:layout_below="@id/accountsetup_customer_paymentMethodSpin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:textColor="#a7a7a8"
+            android:text="Enter your PayPal URL"
+            android:textSize="16dp"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/accountsetup_customer_paypalEdit"
+            android:layout_below="@id/accountsetup_customer_paypalTxt"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:paddingLeft="16dp"
+            android:textCursorDrawable="@null"
+            android:inputType="textCapWords"
+            android:visibility="gone"
+            android:textColor="#ffffff"
+            android:background="@drawable/custom_edittext"/>
+
+        <ImageView
+            android:id="@+id/accountsetup_customer_floatNxt"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/floating_red"
+            android:layout_below="@id/accountsetup_customer_paypalEdit"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/accountsetup_contractorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/accountsetup_selectionLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/accountsetup_contractor_pickTeamTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="#a7a7a8"
+                    android:text="Pick a team you contract for"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <LinearLayout
+                    android:id="@+id/accountsetup_contractor_firmSelectLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/accountsetup_contractor_pickTeamTxt">
+
+                    <Spinner
+                        android:id="@+id/accountsetup_contractor_pickTeamSpin"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:paddingLeft="16dp"
+                        android:layout_weight="10"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/custom_edittext"/>
+
+                    <ImageView
+                        android:id="@+id/accountsetup_contractor_pickFirmFloat"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="25dp"
+                        android:src="@drawable/floating_red"
+                        android:layout_below="@id/accountsetup_contractor_nameEdit"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/accountsetup_contractor_orLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_below="@+id/accountsetup_contractor_firmSelectLayout">
+
+                    <RelativeLayout
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:background="#a8a8a9"/>
+
+                    <TextView
+                        android:id="@+id/accountsetup_contractor_orTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:textColor="#a8a8a9"
+                        android:text="OR"
+                        android:textSize="14dp"/>
+
+                    <RelativeLayout
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:background="#a8a8a9"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/accountsetup_contractor_createTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:textColor="#a8a8a9"
+                    android:text="Create a Contractor Account"
+                    android:layout_below="@id/accountsetup_contractor_orLayout"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/accountsetup_contractor_uploadLogoTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Upload a logo"
+                    android:textColor="#505051"
+                    android:gravity="center"
+                    android:background="@drawable/custom_edittext"
+                    android:layout_below="@id/accountsetup_contractor_createTxt"/>
+
+                <ImageView
+                    android:id="@+id/accountsetup_contractor_uploadLogoImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@id/accountsetup_contractor_createTxt"/>
+
+                <EditText
+                    android:id="@+id/accountsetup_contractor_nameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:paddingLeft="16dp"
+                    android:textSize="16dp"
+                    android:hint="Name of the contracting account"
+                    android:textCursorDrawable="@null"
+                    android:textColor="#ffffff"
+                    android:layout_below="@id/accountsetup_contractor_uploadLogoImg"
+                    android:background="@drawable/custom_edittext"/>
+
+                <ImageView
+                    android:id="@+id/accountsetup_contractor_newFirmFloat"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"
+                    android:src="@drawable/floating_red"
+                    android:layout_below="@id/accountsetup_contractor_nameEdit"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

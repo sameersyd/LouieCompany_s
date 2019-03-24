@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginSignupActivity"
+    android:background="#2e2e30">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/loginSign_topRela"
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+
+        <ImageView
+            android:id="@+id/loginSign_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/louie_bck"/>
+
+        <ImageView
+            android:id="@+id/loginSign_logoImg"
+            android:layout_width="111dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/louie_logo"
+            app:layout_constraintBottom_toBottomOf="@+id/loginSign_img"
+            app:layout_constraintEnd_toEndOf="@+id/loginSign_img"
+            app:layout_constraintStart_toStartOf="@+id/loginSign_img"
+            app:layout_constraintTop_toTopOf="@+id/loginSign_img" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/loginSign_img"
+            app:layout_constraintTop_toBottomOf="@+id/loginSign_logoImg">
+
+            <TextView
+                android:id="@+id/loginSign_loginTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_unselected"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="Login"
+                android:textColor="#ffffff"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/loginSign_signupTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signup_selected"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="Signup"
+                android:textColor="#232F38"
+                android:textSize="14dp"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:layout_below="@id/loginSign_topRela"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/loginSign_loginScript"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/loginSign_login_emailTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:text="Email"
+                    android:textSize="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/loginSign_login_emailEdit"
+                    android:layout_below="@id/loginSign_login_emailTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:textCursorDrawable="@null"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_edittext"/>
+
+                <TextView
+                    android:id="@+id/loginSign_login_passwordTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:layout_below="@id/loginSign_login_emailEdit"
+                    android:text="Password"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:id="@+id/loginSign_login_passwordEdit"
+                    android:layout_below="@id/loginSign_login_passwordTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:inputType="textPassword"
+                    android:textCursorDrawable="@null"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_edittext"/>
+
+                <ImageView
+                    android:id="@+id/loginSign_login_floatingNext"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/floating_red"
+                    android:layout_below="@id/loginSign_login_passwordEdit"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="visible"
+                android:id="@+id/loginSign_signupScript"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/loginSign_sign_nameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:text="Name"
+                    android:textSize="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/loginSign_sign_nameEdit"
+                    android:layout_below="@id/loginSign_sign_nameTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:textCursorDrawable="@null"
+                    android:inputType="textCapWords"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_edittext"/>
+
+                <TextView
+                    android:id="@+id/loginSign_sign_emailTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:layout_below="@id/loginSign_sign_nameEdit"
+                    android:text="Email"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:id="@+id/loginSign_sign_emailEdit"
+                    android:layout_below="@id/loginSign_sign_emailTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_edittext"/>
+
+                <TextView
+                    android:id="@+id/loginSign_sign_passwordTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:layout_below="@id/loginSign_sign_emailEdit"
+                    android:text="Password"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:id="@+id/loginSign_sign_passwordEdit"
+                    android:layout_below="@id/loginSign_sign_passwordTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:inputType="textPassword"
+                    android:textCursorDrawable="@null"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_edittext"/>
+
+                <TextView
+                    android:id="@+id/loginSign_sign_profileImageTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#a7a7a8"
+                    android:layout_below="@id/loginSign_sign_passwordEdit"
+                    android:text="Profile Image"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="10dp" />
+
+                <TextView
+                    android:id="@+id/loginSign_sign_uploadImageTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Upload an image"
+                    android:textColor="#505051"
+                    android:gravity="center"
+                    android:background="@drawable/custom_edittext"
+                    android:layout_below="@id/loginSign_sign_profileImageTxt"/>
+
+                <ImageView
+                    android:id="@+id/loginSign_sign_uploadImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@id/loginSign_sign_profileImageTxt"/>
+
+                <ImageView
+                    android:id="@+id/loginSign_sign_floatingNext"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/floating_red"
+                    android:layout_below="@id/loginSign_sign_uploadImg"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

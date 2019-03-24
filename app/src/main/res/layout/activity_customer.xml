@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomerActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_gradient"/>
+
+    <ImageView
+        android:id="@+id/customer_mainImage"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:src="@drawable/louie_small"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/customer_selectionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/customer_mainImage">
+
+        <TextView
+            android:id="@+id/customer_contractorSelect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/accountsetup_selected"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="Contractor"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:layout_marginLeft="15dp"/>
+
+        <TextView
+            android:id="@+id/customer_referralSelect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/accountsetup_selected"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="Referrals"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/customer_accountSelect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/accountsetup_selected"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="Account"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginRight="15dp"
+            android:textSize="10dp" />
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/customer_selectionLayout"/>
+
+</RelativeLayout>

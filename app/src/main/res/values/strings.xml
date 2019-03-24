@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Louie</string>
+    <string-array name="payment_methods">
+        <item>Cash</item>
+        <item>PayPal</item>
+    </string-array>
+</resources>
