@@ -33,6 +33,9 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".AddReferalActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".InviteCustomerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 

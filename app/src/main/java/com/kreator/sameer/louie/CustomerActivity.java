@@ -25,7 +25,7 @@ public class CustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        final ViewPager viewPager = findViewById(R.id.viewPager);
+        final ViewPager viewPager = findViewById(R.id.customer_viewPager);
         contractorSelect = (TextView)findViewById(R.id.customer_contractorSelect);
         referralSelect = (TextView)findViewById(R.id.customer_referralSelect);
         accountSelect = (TextView)findViewById(R.id.customer_accountSelect);

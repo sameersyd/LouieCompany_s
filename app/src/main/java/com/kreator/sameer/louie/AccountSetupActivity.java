@@ -341,6 +341,7 @@ public class AccountSetupActivity extends AppCompatActivity {
                                             HashMap hsm = new HashMap();
                                             hsm.put(Configs.accountsetup_done,true);
                                             hsm.put(Configs.account_type,Configs.contractor_type_account);
+                                            hsm.put(Configs.firm_key,saltString);
                                             dbChang.child(Configs.users)
                                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                     .updateChildren(hsm).addOnCompleteListener(new OnCompleteListener<Void>() {

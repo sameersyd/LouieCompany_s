@@ -335,6 +335,8 @@ public class LoginSignupActivity extends AppCompatActivity {
                                     s.put(Configs.email_verified,false);
                                     s.put(Configs.profile_image,taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
                                     s.put(Configs.uid,FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    s.put(Configs.contractor_linked,false);
+                                    s.put(Configs.accountsetup_done,false);
                                     try {
                                         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                                         db.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {

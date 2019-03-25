@@ -9,17 +9,17 @@ public class Configs {
     public static String uid = "uid";
     public static String email_verified = "payment_mode";
     public static String accountsetup_done = "accountsetup_done";
-    public static String customer_account = "customer_account";
-    public static String contractor_account = "contractor_account";
     public static String account_type = "account_type";
     public static String payment_mode = "payment_mode";
     public static String paypal_link = "paypal_link";
+    public static String contractor_linked = "contractor_linked";
+    public static String contractor_link_uid = "contractor_link_uid";
+    public static String contractor_invite = "contractor_invite";
+    public static String firm_key = "firm_key";
 
     //Firebase Parent Values
     public static String users = "users";
     public static String firms = "firms";
-    public static String customers = "customers";
-    public static String contractors = "contractors";
 
     //Account types
     public static String customer_type_account = "ZERO_CUSTOMER_ACCOUNT";
