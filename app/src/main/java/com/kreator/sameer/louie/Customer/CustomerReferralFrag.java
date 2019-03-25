@@ -15,7 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,11 +27,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.kreator.sameer.louie.AccountSetupActivity;
 import com.kreator.sameer.louie.AddReferalActivity;
 import com.kreator.sameer.louie.Configs;
 import com.kreator.sameer.louie.R;
+import com.kreator.sameer.louie.SplashActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CustomerReferralFrag extends Fragment {
 
@@ -40,6 +47,9 @@ public class CustomerReferralFrag extends Fragment {
     TextView noContTxt,expTxt,inviteNameTxt,inviteIgnoreTxt;
     RelativeLayout noContView,contInviteView;
     Button inviteAcceptBtn;
+    boolean contlinked;
+
+    DatabaseReference db;
     public static ArrayList<String> contractorsInvitesList = new ArrayList<>();
 
     @Override
@@ -56,12 +66,26 @@ public class CustomerReferralFrag extends Fragment {
         inviteAcceptBtn = (Button)view.findViewById(R.id.customer_referral_contInvAcceptBtn);
 
         noContTxt.setText("No Contractor\nYet :(");
+
+        inviteAcceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accept_invite();
+            }
+        });
+        inviteIgnoreTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ignoreInvite();
+            }
+        });
         addReferral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(),AddReferalActivity.class));
             }
         });
+
         Typeface myCustomFont_montserrat_light = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Montserrat-Light.ttf");
         Typeface myCustomFont_montserrat_regular = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Montserrat-Regular.ttf");
         inviteIgnoreTxt.setTypeface(myCustomFont_montserrat_regular);
@@ -75,12 +99,99 @@ public class CustomerReferralFrag extends Fragment {
         return view;
     }
 
+    public void accept_invite(){
+
+        db = FirebaseDatabase.getInstance().getReference();
+
+        HashMap hm = new HashMap();
+        hm.put(Configs.contractor_linked,true);
+        hm.put(Configs.contractor_link_uid,contractorsInvitesList.get(0));
+
+        //change contractor link status, updating contractor UID in customer account
+        db.child(Configs.users)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+
+                    //enter customer UID in contractors, customer child
+                    db.child(Configs.users)
+                            .child(contractorsInvitesList.get(0))
+                            .child(Configs.customers)
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+
+                                //remove all contractors invite request from customers invite list as it is accepted
+                                db.child(Configs.users)
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child(Configs.contractor_invite)
+                                        .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(getContext(), "Invite accepted", Toast.LENGTH_SHORT).show();
+                                            addReferral.setVisibility(View.VISIBLE);
+                                            noContView.setVisibility(View.GONE);
+                                            contInviteView.setVisibility(View.GONE);
+                                        }else{
+                                            Toast.makeText(getContext(), task.getException()+"", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getContext(), e+"", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }else {
+                                Toast.makeText(getContext(), task.getException()+"", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), e+"", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(getActivity(), task.getException()+"", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void ignoreInvite(){
+        FirebaseDatabase.getInstance().getReference()
+                .child(Configs.users)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(Configs.contractor_invite)
+                .child(contractorsInvitesList.get(0))
+                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                    Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getContext(), task.getException()+"", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e+"", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void referralAndInvites(){
         noContView.setVisibility(View.GONE);
         contInviteView.setVisibility(View.GONE);
         addReferral.setVisibility(View.GONE);
 
-        final boolean[] contlinked = new boolean[1];
         DatabaseReference refs = FirebaseDatabase.getInstance().getReference();
         DatabaseReference imgs = refs
                 .child(Configs.users)
@@ -89,13 +200,13 @@ public class CustomerReferralFrag extends Fragment {
         imgs.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                contlinked[0] = dataSnapshot.getValue(Boolean.class);
-                if (contlinked[0]){
+                contlinked = dataSnapshot.getValue(Boolean.class);
+                if (contlinked){
                     //contractor linked; Show referral adding button and referral links
                     addReferral.setVisibility(View.VISIBLE);
                     noContView.setVisibility(View.GONE);
                     contInviteView.setVisibility(View.GONE);
-                }else if (!contlinked[0]){
+                }else if (!contlinked){
                     addReferral.setVisibility(View.GONE);
                     //contractor not linked; check for invites
                     final DatabaseReference refs = FirebaseDatabase.getInstance().getReference();

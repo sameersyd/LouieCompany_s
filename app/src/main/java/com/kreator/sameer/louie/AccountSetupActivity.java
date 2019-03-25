@@ -39,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -63,7 +64,9 @@ public class AccountSetupActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference db,dbFirms;
 
-    ArrayList<JoinFirmObject> spacecrafts = new ArrayList<>();
+    public static ArrayList<String> firmKeysList = new ArrayList<>();
+    public static ArrayList<String> firmsName = new ArrayList<>();
+    ArrayAdapter<String> adapter;
 
     public static final String FB_STORAGE_PATH = "image/";
     public static final int REQUEST_CODE = 1234;
@@ -76,7 +79,7 @@ public class AccountSetupActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         dbFirms = FirebaseDatabase.getInstance().getReference().child(Configs.firms);
-        retrieve();
+        retrieveFirms();
 
         mainTxt = (TextView)findViewById(R.id.accountsetup_mainTxt);
         customerSelectBtn = (TextView)findViewById(R.id.accountsetup_customerSelectTxt);
@@ -104,7 +107,6 @@ public class AccountSetupActivity extends AppCompatActivity {
                 btnBrowse_Click();
             }
         });
-
         customerFloat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +116,7 @@ public class AccountSetupActivity extends AppCompatActivity {
         contJoinFirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContractorAccount_joinFirm();
+                setContractorAccount_joinFirm(firmKeysList.get(pickFirmSpin.getSelectedItemPosition()));
             }
         });
         contCreateFirm.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +125,11 @@ public class AccountSetupActivity extends AppCompatActivity {
                 setContractorAccount_createFirm();
             }
         });
+
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, firmsName);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pickFirmSpin.setAdapter(adapter);
 
         paymentMethod = (Spinner) findViewById(R.id.accountsetup_customer_paymentMethodSpin);
         paymentAdapter = ArrayAdapter.createFromResource(this, R.array.payment_methods, android.R.layout.simple_spinner_item);
@@ -270,7 +277,78 @@ public class AccountSetupActivity extends AppCompatActivity {
         }
     }
 
-    public void setContractorAccount_joinFirm(){
+    public void setContractorAccount_joinFirm(final String firmKey){
+
+        final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
+        loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loadDialog.setContentView(R.layout.loading_one);
+        loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    loadDialog.dismiss();
+                }
+                return true;
+            }
+        });
+        LottieAnimationView animSelect;
+        animSelect = (LottieAnimationView) loadDialog.findViewById(R.id.loading_one);
+        animSelect.setAnimation("blueline.json");
+        animSelect.playAnimation();
+        animSelect.loop(true);
+
+        Window window = loadDialog.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        loadDialog.show();
+
+        final DatabaseReference dbin = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();
+
+        dbin.child(Configs.firms)
+                .child(firmKey)
+                .child("members")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            HashMap hsm = new HashMap();
+                            hsm.put(Configs.accountsetup_done,true);
+                            hsm.put(Configs.account_type,Configs.contractor_type_account);
+                            hsm.put(Configs.firm_key,firmKey);
+                            dbChang.child(Configs.users)
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .updateChildren(hsm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(AccountSetupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AccountSetupActivity.this, SplashActivity.class));
+                                        finish();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AccountSetupActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(AccountSetupActivity.this, "Firm creation failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AccountSetupActivity.this, e + "", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -417,43 +495,44 @@ public class AccountSetupActivity extends AppCompatActivity {
         }
     }
 
-    public void retrieve() {
+    public void retrieveFirms(){
 
-//        dbFirms.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                fetchFirms(dataSnapshot);
-//            }
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                fetchFirms(dataSnapshot);
-//            }
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//            }
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        });
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference imgs = db.child(Configs.firms);
+        imgs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                firmKeysList.clear();
+                firmsName.clear();
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()){         //getting all firm keys
+                    firmKeysList.add(ds.getRef().getKey()+"");
+                }
+
+                for (int i = 0; i < firmKeysList.size(); i++){
+                    DatabaseReference dbs = db.child(Configs.firms).child(firmKeysList.get(i)).child("firm_name");
+                    dbs.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    firmsName.add(dataSnapshot.getValue(String.class));
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
-
-//    private void fetchFirms(DataSnapshot dataSnapshot) {
-//        spacecrafts.clear();
-//        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//            JoinFirmObject spacecraft = ds.getValue(JoinFirmObject.class);
-//            spacecrafts.add(spacecraft);
-//        }
-//        Log.v("**************",spacecrafts+"");
-//
-////        adapter.spacecrafts = this.spacecrafts;
-////        ((GlobalContext)  getApplicationContext()).globaUserList = this.spacecrafts;
-////        adapter.notifyDataSetChanged();
-////        gv.invalidate();
-////        alertDialog.dismiss();
-//
-//    }
 
 }

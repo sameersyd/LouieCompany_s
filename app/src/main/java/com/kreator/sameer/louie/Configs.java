@@ -16,10 +16,12 @@ public class Configs {
     public static String contractor_link_uid = "contractor_link_uid";
     public static String contractor_invite = "contractor_invite";
     public static String firm_key = "firm_key";
+    public static String referrals = "referrals";
 
     //Firebase Parent Values
     public static String users = "users";
     public static String firms = "firms";
+    public static String customers = "customers";
 
     //Account types
     public static String customer_type_account = "ZERO_CUSTOMER_ACCOUNT";

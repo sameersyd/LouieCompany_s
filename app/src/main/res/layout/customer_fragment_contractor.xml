@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,4 +10,151 @@
         android:layout_height="match_parent"
         android:background="@drawable/view_gradient"/>
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/customer_contracter_noContView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/customer_contracter_ringImg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/no_contractor_ring"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/customer_contracter_noContTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="@color/white_color"
+            android:textSize="38dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/customer_contracter_ringImg"/>
+
+        <TextView
+            android:id="@+id/customer_contracter_expTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="#b9b9b9"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/customer_contracter_noContTxt"
+            android:text="You are not linked with any contractor yet"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/customer_contracter_contView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_centerVertical="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/perc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                android:id="@+id/csStreamImg"
+                android:scaleType="centerCrop"
+                android:background="#ffffff"
+                android:src="@drawable/louie_bck"
+                android:alpha="0.7"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="65dp"
+            android:orientation="vertical"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/customer_contracter_yourContTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="Your Contractor"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/customer_contracter_contSimTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="34dp"
+                android:text="Contractor"
+                android:layout_marginTop="5dp"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/customer_contracter_contNameTxt"
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="34dp"
+                android:text="....."
+                android:textColor="#ffffff"/>
+
+            <RelativeLayout
+                android:id="@+id/customer_contracter_contViewProfileBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="25dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="#ffffff"
+                    android:alpha="0.5"/>
+
+                <TextView
+                    android:id="@+id/customer_contracter_contViewProfileTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="View Profile"
+                    android:textColor="#ffffff"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/customer_contracter_contSuspendBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/customer_contracter_contView"
+        android:text="Suspend Contractor"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        android:textColor="#ffffff"
+        android:backgroundTint="#938e93"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"/>
+
+</RelativeLayout>

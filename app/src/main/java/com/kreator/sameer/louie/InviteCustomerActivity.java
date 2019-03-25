@@ -105,6 +105,7 @@ public class InviteCustomerActivity extends AppCompatActivity {
                         inviteBtn.setEnabled(false);
 
                         if(isRegistered){
+                            //email is registered, get UID using email
                             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                             Query query = rootRef.child("users").orderByChild("email").equalTo(emailEdit.getText().toString());
                             ValueEventListener valueEventListener = new ValueEventListener() {
@@ -114,7 +115,8 @@ public class InviteCustomerActivity extends AppCompatActivity {
 
                                         final String key = ds.getKey();
 
-                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                        //get account type of the user[customer/contractor]
+                                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                         DatabaseReference img = ref
                                                 .child(Configs.users)
                                                 .child(key)
@@ -125,25 +127,49 @@ public class InviteCustomerActivity extends AppCompatActivity {
 
                                                 String accType = dataSnapshot.getValue(String.class)+"";
 
+                                                //check account type [customer/contractor]
                                                 if (accType.equals(Configs.customer_type_account)){
-                                                    DatabaseReference dbs = FirebaseDatabase.getInstance().getReference();
-                                                    dbs.child(Configs.users)
+
+                                                    DatabaseReference linkCheck = ref
+                                                            .child(Configs.users)
                                                             .child(key)
-                                                            .child(Configs.contractor_invite)
-                                                            .child(FirebaseAuth.getInstance().getUid()).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            .child(Configs.contractor_linked);
+                                                    linkCheck.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()){
-                                                                Toast.makeText(InviteCustomerActivity.this, "Invite Sent", Toast.LENGTH_SHORT).show();
-                                                                finish();
-                                                            } else {
-                                                                Toast.makeText(InviteCustomerActivity.this, "Failed to send invite!", Toast.LENGTH_SHORT).show();
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.getValue(Boolean.class)){
+                                                                Toast.makeText(InviteCustomerActivity.this, "Customer linked with other contractor", Toast.LENGTH_SHORT).show();
                                                                 inviteBtn.setEnabled(true);
                                                                 loadDialog.dismiss();
+                                                            }else if(!dataSnapshot.getValue(Boolean.class)){
+                                                                //Customer account! Send invite
+                                                                DatabaseReference dbs = FirebaseDatabase.getInstance().getReference();
+                                                                dbs.child(Configs.users)
+                                                                        .child(key)
+                                                                        .child(Configs.contractor_invite)
+                                                                        .child(FirebaseAuth.getInstance().getUid()).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()){
+                                                                            Toast.makeText(InviteCustomerActivity.this, "Invite Sent", Toast.LENGTH_SHORT).show();
+                                                                            finish();
+                                                                        } else {
+                                                                            Toast.makeText(InviteCustomerActivity.this, "Failed to send invite!", Toast.LENGTH_SHORT).show();
+                                                                            inviteBtn.setEnabled(true);
+                                                                            loadDialog.dismiss();
+                                                                        }
+                                                                    }
+                                                                });
                                                             }
                                                         }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                        }
                                                     });
-                                                }else if (accType.equals(Configs.contractor_type_account)){
+
+                                                }else if (accType.equals(Configs.contractor_type_account)){     //Contractor account can't be sent invite
                                                     Toast.makeText(InviteCustomerActivity.this, "This is a contractor account!", Toast.LENGTH_SHORT).show();
                                                     inviteBtn.setEnabled(true);
                                                     loadDialog.dismiss();
