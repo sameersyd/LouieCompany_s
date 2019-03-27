@@ -92,6 +92,7 @@ public class InviteCustomerActivity extends AppCompatActivity {
                         });
                         LottieAnimationView animSelect;
                         animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
+                        loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                         animSelect.setAnimation("blueline.json");
                         animSelect.playAnimation();
                         animSelect.loop(true);
@@ -138,7 +139,7 @@ public class InviteCustomerActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                             if (dataSnapshot.getValue(Boolean.class)){
-                                                                Toast.makeText(InviteCustomerActivity.this, "Customer linked with other contractor", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(InviteCustomerActivity.this, "Customer linked with some other contractor", Toast.LENGTH_SHORT).show();
                                                                 inviteBtn.setEnabled(true);
                                                                 loadDialog.dismiss();
                                                             }else if(!dataSnapshot.getValue(Boolean.class)){

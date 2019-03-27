@@ -240,6 +240,7 @@ public class AccountSetupActivity extends AppCompatActivity {
             });
             LottieAnimationView animSelect;
             animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
+            loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             animSelect.setAnimation("blueline.json");
             animSelect.playAnimation();
             animSelect.loop(true);
@@ -296,6 +297,7 @@ public class AccountSetupActivity extends AppCompatActivity {
         });
         LottieAnimationView animSelect;
         animSelect = (LottieAnimationView) loadDialog.findViewById(R.id.loading_one);
+        loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         animSelect.setAnimation("blueline.json");
         animSelect.playAnimation();
         animSelect.loop(true);
@@ -377,6 +379,7 @@ public class AccountSetupActivity extends AppCompatActivity {
             });
             LottieAnimationView animSelect;
             animSelect = (LottieAnimationView) loadDialog.findViewById(R.id.loading_one);
+            loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             animSelect.setAnimation("blueline.json");
             animSelect.playAnimation();
             animSelect.loop(true);

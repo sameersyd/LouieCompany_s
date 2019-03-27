@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
-        android:text="Account Setup"
+        android:text="Add Referral"
         android:textSize="32dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"/>
@@ -60,6 +60,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 android:paddingLeft="16dp"
+                android:inputType="textCapWords"
                 android:backgroundTint="#b9b9b9"
                 android:textCursorDrawable="@null"
                 android:textColor="#ffffff"/>
@@ -109,6 +110,7 @@
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#b9b9b9"
                 android:paddingLeft="16dp"
+                android:inputType="textEmailAddress"
                 android:textCursorDrawable="@null"
                 android:textColor="#ffffff"/>
 
@@ -137,6 +139,7 @@
                 android:textColor="#ffffff"/>
 
             <ImageView
+                android:id="@+id/addreferal_addFloatImg"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/add_float"

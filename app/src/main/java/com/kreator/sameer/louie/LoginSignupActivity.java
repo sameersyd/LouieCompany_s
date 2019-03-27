@@ -182,6 +182,7 @@ public class LoginSignupActivity extends AppCompatActivity {
             final Dialog loadDialog = new Dialog(LoginSignupActivity.this);
             loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             loadDialog.setContentView(R.layout.loading_one);
+            loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
 
                 @Override
@@ -275,6 +276,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         });
         LottieAnimationView animSelect;
         animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
+        loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         animSelect.setAnimation("blueline.json");
         animSelect.playAnimation();
         animSelect.loop(true);

@@ -16,7 +16,32 @@ public class Configs {
     public static String contractor_link_uid = "contractor_link_uid";
     public static String contractor_invite = "contractor_invite";
     public static String firm_key = "firm_key";
+
     public static String referrals = "referrals";
+
+    public static String referral_name = "referral_name";
+    public static String referral_phone = "referral_phone";
+    public static String referral_email = "referral_email";
+    public static String referral_additional = "referral_additional";
+    public static String referral_status = "referral_status";
+    public static String referral_key = "referral_key";
+    public static String referral_updated_timestamp = "referral_updated_timestamp";
+
+    public static String referral_submitted_uid = "referral_submitted_uid";
+    public static String referral_updated_uid = "referral_updated_uid";
+    public static String referral_sentToCont_uid = "referral_sentToCont_uid";
+
+
+    //Referral status
+    public static String referral_status_pending = "Pending";
+    public static String referral_status_accepted = "Accepted";
+    public static String referral_status_rejected = "Rejected";
+    public static String referral_status_appointment_scheduled = "Appointment Scheduled";
+    public static String referral_status_successful = "Successful";
+    public static String referral_status_payment_sent = "Payment sent";
+
+
+
 
     //Firebase Parent Values
     public static String users = "users";

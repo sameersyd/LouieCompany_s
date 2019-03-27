@@ -4,4 +4,12 @@
         <item>Cash</item>
         <item>PayPal</item>
     </string-array>
+    <string-array name="referral_status">
+        <item>Pending</item>
+        <item>Accepted</item>
+        <item>Rejected</item>
+        <item>Appointment Scheduled</item>
+        <item>Successful</item>
+        <item>Payment sent</item>
+    </string-array>
 </resources>

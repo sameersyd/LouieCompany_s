@@ -1,9 +1,13 @@
 package com.kreator.sameer.louie.Customer;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kreator.sameer.louie.Configs;
+import com.kreator.sameer.louie.ContractorProfileActivity;
 import com.kreator.sameer.louie.InviteCustomerActivity;
 import com.kreator.sameer.louie.R;
 
@@ -35,9 +40,9 @@ public class CustomerContractorFrag extends Fragment {
     }
 
     TextView yourContTxt,contSimTxt,contNameTxt,viewProTxt,noContTxt,expTxt;
-    Button suspendBtn;
-    RelativeLayout viewProfileBtn,contView,noContView;
-    String contUid;
+    Button suspendBtn,viewProfileBtn;
+    RelativeLayout contView,noContView;
+    String contUid,firmKey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +51,7 @@ public class CustomerContractorFrag extends Fragment {
         yourContTxt = (TextView)view.findViewById(R.id.customer_contracter_yourContTxt);
         contSimTxt = (TextView)view.findViewById(R.id.customer_contracter_contSimTxt);
         contNameTxt = (TextView)view.findViewById(R.id.customer_contracter_contNameTxt);
-        viewProfileBtn = (RelativeLayout) view.findViewById(R.id.customer_contracter_contViewProfileBtn);
+        viewProfileBtn = (Button) view.findViewById(R.id.customer_contracter_contViewProfileBtn);
         suspendBtn = (Button)view.findViewById(R.id.customer_contracter_contSuspendBtn);
         viewProTxt = (TextView)view.findViewById(R.id.customer_contracter_contViewProfileTxt);
         noContTxt = (TextView)view.findViewById(R.id.customer_contracter_noContTxt);
@@ -71,13 +76,41 @@ public class CustomerContractorFrag extends Fragment {
 
         initializeContViews();
 
-        suspendBtn.setOnClickListener(new View.OnClickListener() {
+        viewProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                suspendMethod();
+//                Toast.makeText(getContext(), "Just a sec...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(),ContractorProfileActivity.class);
+                intent.putExtra("firmKey",firmKey);
+                startActivity(intent);
             }
         });
 
+        suspendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog dialog = new AlertDialog.Builder(getContext()).setIcon(R.drawable.app_logo).setTitle(getString(R.string.app_name))
+                        .setMessage("Are you sure you want to leave this contractor?")
+                        .setPositiveButton("Suspend", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                suspendMethod();
+                            }
+                        }).setNegativeButton("No", null)
+                        .create();
+
+                dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getActivity().getColor(R.color.white_color));
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getActivity().getColor(R.color.white_color));
+                        }
+                    }
+                });
+                dialog.show();
+            }
+        });
         return view;
     }
 
@@ -188,6 +221,24 @@ public class CustomerContractorFrag extends Fragment {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     contNameTxt.setText(dataSnapshot.getValue(String.class));
+
+                                    //Get firm key
+                                    final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference img = ref
+                                            .child(Configs.users)
+                                            .child(contUid)
+                                            .child(Configs.firm_key);
+                                    img.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            firmKey = dataSnapshot.getValue(String.class);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override

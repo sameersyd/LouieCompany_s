@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/referral_model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp">
+
+        <TextView
+            android:id="@+id/referralModel_nameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_statusTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/accountsetup_selected"
+            android:paddingLeft="20dp"
+            android:paddingTop="7dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="7dp"
+            android:text=""
+            android:textAlignment="center"
+            android:layout_alignParentEnd="true"
+            android:textColor="#FFFFFF"
+            android:textSize="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_phoneTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_below="@id/referralModel_nameTxt"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_emailTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_below="@id/referralModel_phoneTxt"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_notesPlainTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Notes"
+            android:layout_below="@id/referralModel_emailTxt"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_notesTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_below="@id/referralModel_emailTxt"
+            android:layout_toRightOf="@id/referralModel_notesPlainTxt"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/referralModel_submittedByImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="#766545"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/referralModel_notesTxt"/>
+
+        <TextView
+            android:id="@+id/referralModel_submittedByPlainTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Submitted by "
+            android:layout_toRightOf="@id/referralModel_submittedByImg"
+            android:layout_below="@id/referralModel_notesTxt"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/referralModel_submittedByTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/referralModel_submittedByPlainTxt"
+            android:layout_below="@id/referralModel_notesTxt"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"/>
+
+        <Spinner
+            android:id="@+id/referralModel_statusUpdateSpin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/referralModel_submittedByPlainTxt"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_edittext"/>
+
+        <Button
+            android:id="@+id/referralModel_payBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="#a29da2"
+            android:text="Pay"
+            android:textColor="#ffffff"
+            android:textAllCaps="false"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/referralModel_statusUpdateSpin"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
