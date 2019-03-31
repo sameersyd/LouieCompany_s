@@ -105,6 +105,7 @@ public class ContractorReferralFrag extends Fragment {
             }
         });
 
+        //For swipeRefreshListener not activating while listview swiped down(Going up)
         listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

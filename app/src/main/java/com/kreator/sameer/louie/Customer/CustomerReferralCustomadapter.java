@@ -1,7 +1,6 @@
-package com.kreator.sameer.louie.Contractor;
+package com.kreator.sameer.louie.Customer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +10,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kreator.sameer.louie.PayActivity;
+import com.kreator.sameer.louie.Contractor.ContractorCustomerFrag;
+import com.kreator.sameer.louie.Contractor.ContractorCustomersObject;
 import com.kreator.sameer.louie.R;
 
 import java.util.ArrayList;
 
-public class ContractorCustomerCustomadapter extends BaseAdapter {
+public class CustomerReferralCustomadapter extends BaseAdapter {
 
     Context c;
-    ContractorCustomerFrag delegate;
-    ArrayList<ContractorCustomersObject> spacecrafts = new ArrayList<>();
+    CustomerReferralFrag delegate;
+    ArrayList<CustomerReferralObject> spacecrafts = new ArrayList<>();
 
-    public ContractorCustomerCustomadapter(Context c) {
+    public CustomerReferralCustomadapter(Context c) {
         this.c = c;
     }
     @Override
@@ -40,37 +40,33 @@ public class ContractorCustomerCustomadapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView==null)
-            convertView= LayoutInflater.from(c).inflate(R.layout.cont_customerslist_model,parent,false);
+            convertView= LayoutInflater.from(c).inflate(R.layout.cust_myreferrals_model,parent,false);
 
         Typeface myCustomFont_montserrat_bold = Typeface.createFromAsset(c.getAssets(),"fonts/Montserrat-Bold.ttf");
         Typeface myCustomFont_montserrat_regular = Typeface.createFromAsset(c.getAssets(),"fonts/Montserrat-Regular.ttf");
 
-        TextView nameTxt = (TextView)convertView.findViewById(R.id.contCustList_nameTxt);
-        TextView phoneTxt = (TextView)convertView.findViewById(R.id.contCustList_phoneTxt);
-        TextView emailTxt = (TextView)convertView.findViewById(R.id.contCustList_emailTxt);
-
+        TextView nameTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_nameTxt);
+        TextView phoneTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_phoneTxt);
+        TextView emailTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_emailTxt);
+        TextView updatedNameTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_updatedByTxt);
+        TextView statusTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_statusTxt);
+        TextView updatedPlainTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_statusUpdatedByPlainTxt);
         ImageView profileImg = (ImageView)convertView.findViewById(R.id.contCustList_profileImg);
-        Button payButton = (Button)convertView.findViewById(R.id.contCustList_payBtn);
 
-        nameTxt.setTypeface(myCustomFont_montserrat_bold);
+        nameTxt.setTypeface(myCustomFont_montserrat_regular);
         phoneTxt.setTypeface(myCustomFont_montserrat_regular);
         emailTxt.setTypeface(myCustomFont_montserrat_regular);
-        payButton.setTypeface(myCustomFont_montserrat_regular);
+        statusTxt.setTypeface(myCustomFont_montserrat_regular);
+        updatedPlainTxt.setTypeface(myCustomFont_montserrat_regular);
+        updatedNameTxt.setTypeface(myCustomFont_montserrat_bold);
 
-        payButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(c,PayActivity.class);
-                intent.putExtra("custUid",spacecrafts.get(spacecrafts.size() - position - 1).getCustomer_uid());
-                c.startActivity(intent);
-            }
-        });
-
-        ContractorCustomersObject s = (ContractorCustomersObject) this.getItem(position);
+        CustomerReferralObject s = (CustomerReferralObject) this.getItem(position);
 
         nameTxt.setText(s.getName());
         phoneTxt.setText(s.getPhone());
         emailTxt.setText(s.getEmail());
+        updatedNameTxt.setText(s.getUpdated_name());
+        statusTxt.setText(s.getStatus());
 //        Glide.with(c).load(s.getProfileImg()).into(submittedByImg);
 
         return convertView;

@@ -7,6 +7,7 @@ public class Configs {
     public static String email = "email";
     public static String profile_image = "profile_image";
     public static String uid = "uid";
+    public static String phone = "phone";
     public static String email_verified = "payment_mode";
     public static String accountsetup_done = "accountsetup_done";
     public static String account_type = "account_type";
@@ -30,6 +31,11 @@ public class Configs {
     public static String referral_submitted_uid = "referral_submitted_uid";
     public static String referral_updated_uid = "referral_updated_uid";
     public static String referral_sentToCont_uid = "referral_sentToCont_uid";
+
+    public static String report = "report";
+    public static String report_by_uid = "report_by_uid";
+    public static String report_description = "report_description";
+    public static String report_key = "report_key";
 
 
     //Referral status

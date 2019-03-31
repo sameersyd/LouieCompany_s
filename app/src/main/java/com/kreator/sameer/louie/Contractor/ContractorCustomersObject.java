@@ -2,14 +2,15 @@ package com.kreator.sameer.louie.Contractor;
 
 public class ContractorCustomersObject {
 
-    String name,phone,email,profilePic,contractor_link_uid;
+    String name,phone,email,profilePic,contractor_link_uid,customer_uid;
 
-    public ContractorCustomersObject(String name, String phone, String email, String profilePic, String contractor_link_uid) {
+    public ContractorCustomersObject(String name, String phone, String email, String profilePic, String contractor_link_uid, String customer_uid) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.profilePic = profilePic;
         this.contractor_link_uid = contractor_link_uid;
+        this.customer_uid = customer_uid;
     }
 
     public String getName() {
@@ -50,5 +51,13 @@ public class ContractorCustomersObject {
 
     public void setContractor_link_uid(String contractor_link_uid) {
         this.contractor_link_uid = contractor_link_uid;
+    }
+
+    public String getCustomer_uid() {
+        return customer_uid;
+    }
+
+    public void setCustomer_uid(String customer_uid) {
+        this.customer_uid = customer_uid;
     }
 }

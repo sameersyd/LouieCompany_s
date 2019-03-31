@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PayActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_gradient"/>
+
+    <ImageView
+        android:id="@+id/pay_closeImg"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/x_white"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/pay_nameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="........"
+        android:textSize="32dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pay_nameTxt"
+        android:layout_above="@id/pay_amountTxt"
+        android:gravity="center_vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pay_profilePic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:src="#543423"/>
+
+        <LinearLayout
+            android:background="@drawable/pay_details"
+            android:layout_below="@id/pay_profilePic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:paddingTop="15dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="15dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pay_contactTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/pay_numberTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=".........."
+                android:textSize="14dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/pay_emailTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="..................."
+                android:textSize="14dp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/pay_amountTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:textColor="#b9b9b9"
+        android:text="Amount"
+        android:textSize="16dp"
+        android:layout_above="@id/pay_emailEdit"
+        android:layout_marginBottom="10dp" />
+
+    <EditText
+        android:id="@+id/pay_emailEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="10dp"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="16dp"
+        android:layout_above="@id/pay_payBtn"
+        android:backgroundTint="#b9b9b9"
+        android:textCursorDrawable="@null"
+        android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/pay_payBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Pay ............."
+        android:backgroundTint="#878183"
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"/>
+
+</RelativeLayout>

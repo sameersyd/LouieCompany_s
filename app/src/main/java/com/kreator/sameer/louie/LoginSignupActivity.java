@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -43,13 +44,13 @@ import java.util.HashMap;
 
 public class LoginSignupActivity extends AppCompatActivity {
 
-    TextView loginSelectBtn,signupSelectBtn;
+    TextView loginSelectBtn,signupSelectBtn,forgotPasswordTxt;
     RelativeLayout loginScript,signupScript;
     ImageView loginBtn,signupBtn;
     ImageView signUploadImg;
 
-    TextView signNameTxt,signEmailTxt,signPasswordTxt,signProfileImgTxt,signUploadImgTxt;
-    EditText signNameEdit,signEmailEdit,signPasswordEdit;
+    TextView signNameTxt,signEmailTxt,signPasswordTxt,signProfileImgTxt,signUploadImgTxt,signPhoneTxt;
+    EditText signNameEdit,signEmailEdit,signPasswordEdit,signPhoneEdit;
 
     TextView loginEmailTxt,loginPasswordTxt;
     EditText loginEmailEdit,loginPasswordEdit;
@@ -76,6 +77,8 @@ public class LoginSignupActivity extends AppCompatActivity {
         signPasswordTxt = (TextView)findViewById(R.id.loginSign_sign_passwordTxt);
         signProfileImgTxt = (TextView)findViewById(R.id.loginSign_sign_profileImageTxt);
         signUploadImgTxt = (TextView)findViewById(R.id.loginSign_sign_uploadImageTxt);
+        signPhoneTxt = (TextView)findViewById(R.id.loginSign_sign_phoneTxt);
+        signPhoneEdit = (EditText)findViewById(R.id.loginSign_sign_phoneEdit);
         signNameEdit = (EditText)findViewById(R.id.loginSign_sign_nameEdit);
         signEmailEdit = (EditText)findViewById(R.id.loginSign_sign_emailEdit);
         signPasswordEdit = (EditText)findViewById(R.id.loginSign_sign_passwordEdit);
@@ -84,6 +87,7 @@ public class LoginSignupActivity extends AppCompatActivity {
 
         //login views
         loginEmailTxt = (TextView)findViewById(R.id.loginSign_login_emailTxt);
+        forgotPasswordTxt = (TextView)findViewById(R.id.loginSign_login_forgotPassTxt);
         loginPasswordTxt = (TextView)findViewById(R.id.loginSign_login_passwordTxt);
         loginEmailEdit = (EditText)findViewById(R.id.loginSign_login_emailEdit);
         loginPasswordEdit = (EditText)findViewById(R.id.loginSign_login_passwordEdit);
@@ -95,9 +99,11 @@ public class LoginSignupActivity extends AppCompatActivity {
 
         signNameTxt.setTypeface(myCustomFont_montserrat_regular);
         signEmailTxt.setTypeface(myCustomFont_montserrat_regular);
+        signPhoneTxt.setTypeface(myCustomFont_montserrat_regular);
         signPasswordTxt.setTypeface(myCustomFont_montserrat_regular);
         signNameEdit.setTypeface(myCustomFont_montserrat_regular);
         signEmailEdit.setTypeface(myCustomFont_montserrat_regular);
+        signPhoneEdit.setTypeface(myCustomFont_montserrat_regular);
         signPasswordEdit.setTypeface(myCustomFont_montserrat_regular);
         signProfileImgTxt.setTypeface(myCustomFont_montserrat_regular);
         signUploadImgTxt.setTypeface(myCustomFont_montserrat_regular);
@@ -144,6 +150,40 @@ public class LoginSignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 btnBrowse_Click();
+            }
+        });
+
+        forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (loginEmailEdit.getText().toString().isEmpty()||loginEmailEdit.getText().toString().equals("")){
+                    Toast.makeText(LoginSignupActivity.this, "Enter the email", Toast.LENGTH_SHORT).show();
+                }else{
+                    String emailReset = loginEmailEdit.getText().toString();
+                    new AlertDialog.Builder(LoginSignupActivity.this).setIcon(android.R.drawable.ic_dialog_email).setTitle("Reset password email")
+                            .setMessage("Send reset password link to "+emailReset)
+                            .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    auth.sendPasswordResetEmail(loginEmailEdit.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(LoginSignupActivity.this, "Check email for reset password link", Toast.LENGTH_SHORT).show();
+                                            }else {
+                                                Toast.makeText(LoginSignupActivity.this, "Email is not registered!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(LoginSignupActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }).setNegativeButton("Change Email", null).show();
+                }
             }
         });
 
@@ -240,6 +280,9 @@ public class LoginSignupActivity extends AppCompatActivity {
         }else if (signEmailEdit.getText().toString().isEmpty()||signEmailEdit.getText().toString().equals("")){
             Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();
             return;
+        }else if (signPhoneEdit.getText().toString().isEmpty()||signPhoneEdit.getText().toString().equals("")){
+            Toast.makeText(this, "Enter phone number", Toast.LENGTH_SHORT).show();
+            return;
         }else if (signPasswordEdit.getText().toString().isEmpty()||signPasswordEdit.getText().toString().equals("")){
             Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
             return;
@@ -334,6 +377,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                                     HashMap s = new HashMap();
                                     s.put(Configs.name,signNameEdit.getText().toString().trim());
                                     s.put(Configs.email,signEmailEdit.getText().toString().trim());
+                                    s.put(Configs.phone,signPhoneEdit.getText().toString());
                                     s.put(Configs.email_verified,false);
                                     s.put(Configs.profile_image,taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
                                     s.put(Configs.uid,FirebaseAuth.getInstance().getCurrentUser().getUid());

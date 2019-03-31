@@ -72,13 +72,11 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
         TextView additionalTxt = (TextView)convertView.findViewById(R.id.referralModel_notesTxt);
         final TextView submittedByTxt = (TextView)convertView.findViewById(R.id.referralModel_submittedByTxt);
         TextView statusTxt = (TextView)convertView.findViewById(R.id.referralModel_statusTxt);
-
         TextView submittedPlain = (TextView)convertView.findViewById(R.id.referralModel_submittedByPlainTxt);
         TextView notesPlain = (TextView)convertView.findViewById(R.id.referralModel_notesPlainTxt);
-
-        Spinner statusSpin = (Spinner) convertView.findViewById(R.id.referralModel_statusUpdateSpin);
+        final Spinner statusSpin = (Spinner) convertView.findViewById(R.id.referralModel_statusUpdateSpin);
         ImageView submittedByImg = (ImageView)convertView.findViewById(R.id.referralModel_submittedByImg);
-        Button payButton = (Button)convertView.findViewById(R.id.referralModel_payBtn);
+        Button updateStatusButton = (Button)convertView.findViewById(R.id.referralModel_updateStatusBtn);
 
         statusAdapter = ArrayAdapter.createFromResource(c, R.array.referral_status, android.R.layout.simple_spinner_item);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,7 +90,7 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
         statusTxt.setTypeface(myCustomFont_montserrat_regular);
         submittedPlain.setTypeface(myCustomFont_montserrat_regular);
         notesPlain.setTypeface(myCustomFont_montserrat_bold);
-        payButton.setTypeface(myCustomFont_montserrat_regular);
+        updateStatusButton.setTypeface(myCustomFont_montserrat_regular);
 
         final ContractorReferralsObject s = (ContractorReferralsObject) this.getItem(position);
 
@@ -105,22 +103,22 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
 
         if (s.getReferral_status().equals(Configs.referral_status_pending)){
             statusSpin.setSelection(0);
-            payButton.setVisibility(View.GONE);
+//            payButton.setVisibility(View.GONE);
         }else if (s.getReferral_status().equals(Configs.referral_status_accepted)){
             statusSpin.setSelection(1);
-            payButton.setVisibility(View.GONE);
+//            payButton.setVisibility(View.GONE);
         }else if (s.getReferral_status().equals(Configs.referral_status_rejected)){
             statusSpin.setSelection(2);
-            payButton.setVisibility(View.GONE);
+//            payButton.setVisibility(View.GONE);
         }else if (s.getReferral_status().equals(Configs.referral_status_appointment_scheduled)){
             statusSpin.setSelection(3);
-            payButton.setVisibility(View.GONE);
+//            payButton.setVisibility(View.GONE);
         }else if (s.getReferral_status().equals(Configs.referral_status_successful)){
             statusSpin.setSelection(4);
-            payButton.setVisibility(View.VISIBLE);
+//            payButton.setVisibility(View.VISIBLE);
         }else if (s.getReferral_status().equals(Configs.referral_status_payment_sent)){
             statusSpin.setSelection(5);
-            payButton.setVisibility(View.VISIBLE);
+//            payButton.setVisibility(View.VISIBLE);
         }
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -136,7 +134,25 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(c, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        updateStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_pending))
+                    updateStatus(Configs.referral_status_pending,s.getReferral_sentToCont_uid(),s.getReferral_key());
+                else if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_accepted))
+                    updateStatus(Configs.referral_status_accepted,s.getReferral_sentToCont_uid(),s.getReferral_key());
+                else if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_rejected))
+                    updateStatus(Configs.referral_status_rejected,s.getReferral_sentToCont_uid(),s.getReferral_key());
+                else if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_appointment_scheduled))
+                    updateStatus(Configs.referral_status_appointment_scheduled,s.getReferral_sentToCont_uid(),s.getReferral_key());
+                else if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_successful))
+                    updateStatus(Configs.referral_status_successful,s.getReferral_sentToCont_uid(),s.getReferral_key());
+                else if (statusSpin.getSelectedItem().toString().equals(Configs.referral_status_payment_sent))
+                    updateStatus(Configs.referral_status_payment_sent,s.getReferral_sentToCont_uid(),s.getReferral_key());
             }
         });
 
@@ -180,18 +196,21 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateStatus(String status){
+    public void updateStatus(final String status, String contUid, String key){
         HashMap map = new HashMap();
         map.put(Configs.referral_status,status);
         map.put(Configs.referral_updated_uid,FirebaseAuth.getInstance().getCurrentUser().getUid());
         DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();
         dbChang.child(Configs.users)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(contUid)
+                .child(Configs.referrals)
+                .child(key)
                 .updateChildren(map).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()){
                     Toast.makeText(c, "Status Updated", Toast.LENGTH_SHORT).show();
+                    delegate.mainFetch();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

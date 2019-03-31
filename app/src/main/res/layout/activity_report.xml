@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReportActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_gradient"/>
+
+    <TextView
+        android:id="@+id/report_mainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:text="File a report"
+        android:textColor="#ffffff"
+        android:textSize="32dp" />
+
+    <ImageView
+        android:id="@+id/report_closeImg"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/x_white"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/report_describeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="50dp"
+        android:text="Describe your experience/report"
+        android:layout_below="@id/report_mainTxt"
+        android:textColor="#b9b9b9"
+        android:textSize="16dp" />
+
+    <EditText
+        android:id="@+id/report_descEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/report_describeTxt"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="18dp"
+        android:backgroundTint="#b9b9b9"
+        android:hint="Describe your issue with this contractor.."/>
+
+    <Button
+        android:id="@+id/report_submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Submit"
+        android:backgroundTint="#878183"
+        android:layout_margin="35dp"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"/>
+
+</RelativeLayout>

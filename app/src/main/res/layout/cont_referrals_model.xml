@@ -86,44 +86,52 @@
             android:layout_marginTop="10dp"
             android:textSize="16dp"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/referralModel_submittedByImg"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="#766545"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/referralModel_notesTxt"/>
-
-        <TextView
-            android:id="@+id/referralModel_submittedByPlainTxt"
+        <RelativeLayout
+            android:id="@+id/referralModel_rela"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="Submitted by "
-            android:layout_toRightOf="@id/referralModel_submittedByImg"
-            android:layout_below="@id/referralModel_notesTxt"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
-            android:textSize="16dp"/>
+            android:layout_below="@id/referralModel_notesTxt">
 
-        <TextView
-            android:id="@+id/referralModel_submittedByTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text=""
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/referralModel_submittedByPlainTxt"
-            android:layout_below="@id/referralModel_notesTxt"
-            android:layout_marginTop="10dp"
-            android:textSize="16dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/referralModel_submittedByImg"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="#766545"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/referralModel_submittedByPlainTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Submitted by "
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/referralModel_submittedByImg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/referralModel_submittedByTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Sameer"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/referralModel_submittedByPlainTxt"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"/>
+
+        </RelativeLayout>
 
         <Spinner
             android:id="@+id/referralModel_statusUpdateSpin"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/referralModel_submittedByPlainTxt"
+            android:layout_below="@id/referralModel_rela"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -131,11 +139,11 @@
             android:background="@drawable/custom_edittext"/>
 
         <Button
-            android:id="@+id/referralModel_payBtn"
+            android:id="@+id/referralModel_updateStatusBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="#a29da2"
-            android:text="Pay"
+            android:text="Update Status"
             android:textColor="#ffffff"
             android:textAllCaps="false"
             android:layout_marginRight="16dp"

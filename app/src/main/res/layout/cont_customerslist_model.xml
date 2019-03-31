@@ -25,7 +25,7 @@
                 android:id="@+id/contCustList_profileImg"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:background="#766545"
+                android:src="#766545"
                 android:layout_centerVertical="true"/>
 
             <TextView

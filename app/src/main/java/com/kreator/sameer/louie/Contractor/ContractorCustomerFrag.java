@@ -107,6 +107,7 @@ public class ContractorCustomerFrag extends Fragment {
             }
         });
 
+        //For swipeRefreshListener not activating while listview swiped down(Going up)
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -208,10 +209,11 @@ public class ContractorCustomerFrag extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         adapter.spacecrafts.add(new ContractorCustomersObject(
                                 dataSnapshot.child(Configs.name).getValue().toString(),
-                                "phone",
+                                dataSnapshot.child(Configs.phone).getValue().toString(),
                                 dataSnapshot.child(Configs.email).getValue().toString(),
                                 dataSnapshot.child(Configs.profile_image).getValue().toString(),
-                                dataSnapshot.child(Configs.contractor_link_uid).getValue().toString()));
+                                dataSnapshot.child(Configs.contractor_link_uid).getValue().toString(),
+                                idC));
                         adapter.notifyDataSetChanged();
                     }
 

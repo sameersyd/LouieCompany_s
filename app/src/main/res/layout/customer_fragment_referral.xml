@@ -1,110 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.SwipeRefreshLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/customer_referral_swipeRefreshLayout"
+android:layout_height="match_parent"
+android:background="@drawable/view_gradient">
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/view_gradient"/>
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/customer_referral_noContView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/customer_referral_ringImg"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/no_contractor_ring"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:id="@+id/customer_referral_noContTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textAlignment="center"
-            android:textColor="@color/white_color"
-            android:textSize="38dp"
-            android:layout_marginTop="15dp"
-            android:layout_below="@id/customer_referral_ringImg"/>
-
-        <TextView
-            android:id="@+id/customer_referral_expTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textAlignment="center"
-            android:textColor="#b9b9b9"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/customer_referral_noContTxt"
-            android:text="You need to be invited by a contractor to be able to send referrals"/>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/customer_referral_contInviteView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/customer_referral_contInvNameTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="38dp"
-            android:text="You have an invite from •••••"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#ffffff"/>
-
-        <Button
-            android:id="@+id/customer_referral_contInvAcceptBtn"
+        <ListView
+            android:id="@+id/customer_referral_listview"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@id/customer_referral_contInvNameTxt"
-            android:layout_margin="30dp"
-            android:backgroundTint="#928e93"
-            android:textColor="#ffffff"
-            android:text="Accept"
-            android:textSize="16dp"
-            android:textAllCaps="false"/>
+            android:layout_height="match_parent"
+            android:divider="@null"/>
 
-        <TextView
-            android:id="@+id/customer_referral_contInvIgnoreTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/white_color"
-            android:layout_below="@id/customer_referral_contInvAcceptBtn"
-            android:text="Ignore"
-            android:textSize="14dp"/>
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/customer_referral_noContView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/customer_referral_addImage"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="70dp"
-        android:src="@drawable/add_float"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/customer_referral_ringImg"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/no_contractor_ring"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/customer_referral_noContTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/white_color"
+                    android:textSize="38dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/customer_referral_ringImg"/>
+
+                <TextView
+                    android:id="@+id/customer_referral_expTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:textColor="#b9b9b9"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@id/customer_referral_noContTxt"
+                    android:text="You need to be invited by a contractor to be able to send referrals"/>
 
 
-</RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/customer_referral_contInviteView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/customer_referral_contInvNameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="38dp"
+                    android:text="You have an invite from •••••"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#ffffff"/>
+
+                <Button
+                    android:id="@+id/customer_referral_contInvAcceptBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/customer_referral_contInvNameTxt"
+                    android:layout_margin="30dp"
+                    android:backgroundTint="#928e93"
+                    android:textColor="#ffffff"
+                    android:text="Accept"
+                    android:textSize="16dp"
+                    android:textAllCaps="false"/>
+
+                <TextView
+                    android:id="@+id/customer_referral_contInvIgnoreTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/white_color"
+                    android:layout_below="@id/customer_referral_contInvAcceptBtn"
+                    android:text="Ignore"
+                    android:textSize="14dp"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/customer_referral_addImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="70dp"
+                android:src="@drawable/add_float"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

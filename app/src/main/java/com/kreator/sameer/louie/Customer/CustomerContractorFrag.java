@@ -26,8 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kreator.sameer.louie.Configs;
-import com.kreator.sameer.louie.ContractorProfileActivity;
-import com.kreator.sameer.louie.InviteCustomerActivity;
+import com.kreator.sameer.louie.ViewContractor.ViewContractorActivity;
 import com.kreator.sameer.louie.R;
 
 import java.util.HashMap;
@@ -43,6 +42,7 @@ public class CustomerContractorFrag extends Fragment {
     Button suspendBtn,viewProfileBtn;
     RelativeLayout contView,noContView;
     String contUid,firmKey;
+    boolean viewProfileBoo = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,10 +79,13 @@ public class CustomerContractorFrag extends Fragment {
         viewProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getContext(), "Just a sec...", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(),ContractorProfileActivity.class);
-                intent.putExtra("firmKey",firmKey);
-                startActivity(intent);
+                if (viewProfileBoo) {
+                    Intent intent = new Intent(getContext(), ViewContractorActivity.class);
+                    intent.putExtra("firmKey", firmKey);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getContext(), "Wait until we fetch data...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -184,6 +187,9 @@ public class CustomerContractorFrag extends Fragment {
 
     public void initializeContViews(){
         //check whether customer linked to contractor
+
+        viewProfileBoo = false;
+
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         DatabaseReference img = ref
                 .child(Configs.users)
@@ -232,6 +238,7 @@ public class CustomerContractorFrag extends Fragment {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             firmKey = dataSnapshot.getValue(String.class);
+                                            viewProfileBoo = true;
                                         }
 
                                         @Override

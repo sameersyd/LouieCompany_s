@@ -5,8 +5,12 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_margin="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/referral_model"
+        android:elevation="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -62,39 +66,47 @@
             android:layout_marginTop="10dp"
             android:textSize="16dp"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/custMyReferrals_statusUpdatedByImg"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="#766545"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/custMyReferrals_emailTxt"/>
-
-        <TextView
-            android:id="@+id/custMyReferrals_statusUpdatedByPlainTxt"
+        <RelativeLayout
+            android:id="@+id/custMyReferrals_rela"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="Status updated by "
-            android:layout_toRightOf="@id/custMyReferrals_statusUpdatedByImg"
-            android:layout_below="@id/custMyReferrals_emailTxt"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:textSize="16dp"/>
+            android:layout_below="@id/custMyReferrals_emailTxt">
 
-        <TextView
-            android:id="@+id/custMyReferrals_submittedByTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="Timothy"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/custMyReferrals_statusUpdatedByPlainTxt"
-            android:layout_below="@id/custMyReferrals_emailTxt"
-            android:layout_marginTop="10dp"
-            android:textSize="16dp"
-            android:layout_marginBottom="25dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/custMyReferrals_statusUpdatedByImg"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="#543423"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/custMyReferrals_statusUpdatedByPlainTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Status updated by "
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/custMyReferrals_statusUpdatedByImg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/custMyReferrals_updatedByTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Timothy"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/custMyReferrals_statusUpdatedByPlainTxt"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
+                android:layout_marginBottom="25dp"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
