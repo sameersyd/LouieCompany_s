@@ -12,7 +12,6 @@ public class Configs {
     public static String accountsetup_done = "accountsetup_done";
     public static String account_type = "account_type";
     public static String payment_mode = "payment_mode";
-    public static String paypal_link = "paypal_link";
     public static String contractor_linked = "contractor_linked";
     public static String contractor_link_uid = "contractor_link_uid";
     public static String contractor_invite = "contractor_invite";

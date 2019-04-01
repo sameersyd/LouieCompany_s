@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,9 +33,8 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue(Boolean.class) == null || (dataSnapshot.getValue(Boolean.class) != true && dataSnapshot.getValue(Boolean.class) != false)){
-                            Toast.makeText(SplashActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
-                            auth.signOut();
-                            finish();
+                            Toast.makeText(SplashActivity.this, "Update your profile", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SplashActivity.this,EditProfileActivity.class));
                             return;
                         }
                         if (dataSnapshot.getValue(Boolean.class)){

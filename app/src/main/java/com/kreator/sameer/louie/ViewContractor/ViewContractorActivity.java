@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -19,12 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kreator.sameer.louie.Configs;
 import com.kreator.sameer.louie.Contractor.ContractorCustomersObject;
 import com.kreator.sameer.louie.Customer.CustomerReferralCustomadapter;
@@ -36,7 +43,7 @@ import java.util.ArrayList;
 public class ViewContractorActivity extends AppCompatActivity {
 
     String firmKey;
-    ImageView closeImg;
+    ImageView closeImg,teamImg;
     TextView nameTxt,reportPlainTxt,theTeamTxt,contPlainTxt;
     RelativeLayout reportBtn;
 
@@ -61,6 +68,7 @@ public class ViewContractorActivity extends AppCompatActivity {
         reportPlainTxt = (TextView)findViewById(R.id.contProfile_reportPlain);
         theTeamTxt = (TextView)findViewById(R.id.contProfile_theTeam);
         reportBtn = (RelativeLayout)findViewById(R.id.contProfile_reportRela);
+        teamImg = (ImageView)findViewById(R.id.contProfile_contTeamImg);
         closeImg = (ImageView)findViewById(R.id.contProfile_closeImg);
         closeImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +123,32 @@ public class ViewContractorActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         mainFetch();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                .child(Configs.firms)
+                .child(firmKey);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                storageRef.child(dataSnapshot.child("firm_logo").getValue(String.class)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(ViewContractorActivity.this).load(uri).into(teamImg);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(ViewContractorActivity.this, exception+"", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(ViewContractorActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

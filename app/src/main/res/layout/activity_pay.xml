@@ -16,10 +16,11 @@
         android:id="@+id/pay_closeImg"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/x_white"
+        android:layout_alignTop="@+id/pay_nameTxt"
+        android:layout_alignBottom="@+id/pay_nameTxt"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"/>
+        android:src="@drawable/x_white" />
 
     <TextView
         android:id="@+id/pay_nameTxt"
@@ -43,7 +44,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:src="#543423"/>
+            android:src="#212121"/>
 
         <LinearLayout
             android:background="@drawable/pay_details"
@@ -99,18 +100,21 @@
         android:textColor="#b9b9b9"
         android:text="Amount"
         android:textSize="16dp"
-        android:layout_above="@id/pay_emailEdit"
+        android:visibility="gone"
+        android:layout_above="@id/pay_amountEdit"
         android:layout_marginBottom="10dp" />
 
     <EditText
-        android:id="@+id/pay_emailEdit"
+        android:id="@+id/pay_amountEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="10dp"
-        android:inputType="textEmailAddress"
+        android:inputType="number"
         android:paddingLeft="16dp"
+        android:visibility="gone"
+        android:hint="Amount in USD"
         android:layout_above="@id/pay_payBtn"
         android:backgroundTint="#b9b9b9"
         android:textCursorDrawable="@null"
@@ -125,8 +129,23 @@
         android:backgroundTint="#878183"
         android:layout_marginBottom="35dp"
         android:layout_marginLeft="25dp"
+        android:visibility="gone"
         android:layout_marginRight="25dp"
         android:textAllCaps="false"
         android:textColor="#ffffff"/>
+
+    <TextView
+        android:id="@+id/pay_cashTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="20dp"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:textColor="#ffffff"
+        android:textSize="18dp"
+        android:text="This user prefers cash payment"/>
 
 </RelativeLayout>

@@ -2,15 +2,14 @@ package com.kreator.sameer.louie.Customer;
 
 public class CustomerReferralObject {
 
-    String name,phone,email,status,updated_name,updated_profileImg;
+    String name,phone,email,status,updated_uid;
 
-    public CustomerReferralObject(String name, String phone, String email, String status, String updated_name, String updated_profileImg) {
+    public CustomerReferralObject(String name, String phone, String email, String status, String updated_uid) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.status = status;
-        this.updated_name = updated_name;
-        this.updated_profileImg = updated_profileImg;
+        this.updated_uid = updated_uid;
     }
 
     public String getName() {
@@ -45,19 +44,11 @@ public class CustomerReferralObject {
         this.status = status;
     }
 
-    public String getUpdated_name() {
-        return updated_name;
+    public String getUpdated_uid() {
+        return updated_uid;
     }
 
-    public void setUpdated_name(String updated_name) {
-        this.updated_name = updated_name;
-    }
-
-    public String getUpdated_profileImg() {
-        return updated_profileImg;
-    }
-
-    public void setUpdated_profileImg(String updated_profileImg) {
-        this.updated_profileImg = updated_profileImg;
+    public void setUpdated_uid(String updated_uid) {
+        this.updated_uid = updated_uid;
     }
 }

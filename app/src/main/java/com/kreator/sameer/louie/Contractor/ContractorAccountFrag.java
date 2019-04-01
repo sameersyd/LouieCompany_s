@@ -1,6 +1,7 @@
 package com.kreator.sameer.louie.Contractor;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kreator.sameer.louie.R;
 import com.kreator.sameer.louie.SplashActivity;
+import com.kreator.sameer.louie.EditProfileActivity;
 
 public class ContractorAccountFrag extends Fragment {
 
@@ -19,14 +21,30 @@ public class ContractorAccountFrag extends Fragment {
         return fragment;
     }
 
-    TextView logoutTxt;
+    TextView accountSetupTxt,editProfileTxt,logoutTxt;
     FirebaseAuth auth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.contractor_fragment_account , container, false);
         auth = FirebaseAuth.getInstance();
+
+        accountSetupTxt = (TextView)view.findViewById(R.id.contractor_account_accountSetupTxt);
+        editProfileTxt = (TextView)view.findViewById(R.id.contractor_account_editProfileTxt);
         logoutTxt = (TextView)view.findViewById(R.id.contractor_account_logoutTxt);
+
+        Typeface myCustomFont_montserrat_regular = Typeface.createFromAsset(view.getContext().getAssets(),"fonts/Montserrat-Regular.ttf");
+        accountSetupTxt.setTypeface(myCustomFont_montserrat_regular);
+        editProfileTxt.setTypeface(myCustomFont_montserrat_regular);
+        logoutTxt.setTypeface(myCustomFont_montserrat_regular);
+
+        editProfileTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),EditProfileActivity.class));
+            }
+        });
+
         logoutTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

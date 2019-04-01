@@ -44,7 +44,7 @@ import java.util.HashMap;
 
 public class LoginSignupActivity extends AppCompatActivity {
 
-    TextView loginSelectBtn,signupSelectBtn,forgotPasswordTxt;
+    TextView loginSelectBtn,signupSelectBtn,loginForgotPasswordTxt;
     RelativeLayout loginScript,signupScript;
     ImageView loginBtn,signupBtn;
     ImageView signUploadImg;
@@ -87,7 +87,7 @@ public class LoginSignupActivity extends AppCompatActivity {
 
         //login views
         loginEmailTxt = (TextView)findViewById(R.id.loginSign_login_emailTxt);
-        forgotPasswordTxt = (TextView)findViewById(R.id.loginSign_login_forgotPassTxt);
+        loginForgotPasswordTxt = (TextView)findViewById(R.id.loginSign_login_forgotPassTxt);
         loginPasswordTxt = (TextView)findViewById(R.id.loginSign_login_passwordTxt);
         loginEmailEdit = (EditText)findViewById(R.id.loginSign_login_emailEdit);
         loginPasswordEdit = (EditText)findViewById(R.id.loginSign_login_passwordEdit);
@@ -112,6 +112,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         loginPasswordTxt.setTypeface(myCustomFont_montserrat_regular);
         loginEmailEdit.setTypeface(myCustomFont_montserrat_regular);
         loginPasswordEdit.setTypeface(myCustomFont_montserrat_regular);
+        loginForgotPasswordTxt.setTypeface(myCustomFont_montserrat_regular);
 
         loginSelectBtn.setBackground(getDrawable(R.drawable.login_selected));
         signupSelectBtn.setBackground(getDrawable(R.drawable.signup_unselected));
@@ -153,7 +154,7 @@ public class LoginSignupActivity extends AppCompatActivity {
             }
         });
 
-        forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
+        loginForgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -370,7 +371,8 @@ public class LoginSignupActivity extends AppCompatActivity {
                         }else {
                             StorageReference mStorageRef;
                             mStorageRef = FirebaseStorage.getInstance().getReference();
-                            StorageReference ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri));
+                            final String fileChild = FirebaseAuth.getInstance().getCurrentUser().getUid()+FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri);
+                            StorageReference ref = mStorageRef.child(fileChild);
                             ref.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -379,7 +381,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                                     s.put(Configs.email,signEmailEdit.getText().toString().trim());
                                     s.put(Configs.phone,signPhoneEdit.getText().toString());
                                     s.put(Configs.email_verified,false);
-                                    s.put(Configs.profile_image,taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                                    s.put(Configs.profile_image,fileChild);
                                     s.put(Configs.uid,FirebaseAuth.getInstance().getCurrentUser().getUid());
                                     s.put(Configs.contractor_linked,false);
                                     s.put(Configs.accountsetup_done,false);

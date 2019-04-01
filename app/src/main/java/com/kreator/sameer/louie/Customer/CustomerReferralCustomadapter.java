@@ -2,6 +2,9 @@ package com.kreator.sameer.louie.Customer;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +12,23 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.kreator.sameer.louie.Configs;
 import com.kreator.sameer.louie.Contractor.ContractorCustomerFrag;
 import com.kreator.sameer.louie.Contractor.ContractorCustomersObject;
 import com.kreator.sameer.louie.R;
+import com.kreator.sameer.louie.ViewContractor.ViewContractorActivity;
 
 import java.util.ArrayList;
 
@@ -48,10 +64,10 @@ public class CustomerReferralCustomadapter extends BaseAdapter {
         TextView nameTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_nameTxt);
         TextView phoneTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_phoneTxt);
         TextView emailTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_emailTxt);
-        TextView updatedNameTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_updatedByTxt);
+        final TextView updatedNameTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_updatedByTxt);
         TextView statusTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_statusTxt);
         TextView updatedPlainTxt = (TextView)convertView.findViewById(R.id.custMyReferrals_statusUpdatedByPlainTxt);
-        ImageView profileImg = (ImageView)convertView.findViewById(R.id.contCustList_profileImg);
+        final ImageView profileImg = (ImageView)convertView.findViewById(R.id.custMyReferrals_statusUpdatedByImg);
 
         nameTxt.setTypeface(myCustomFont_montserrat_regular);
         phoneTxt.setTypeface(myCustomFont_montserrat_regular);
@@ -60,14 +76,39 @@ public class CustomerReferralCustomadapter extends BaseAdapter {
         updatedPlainTxt.setTypeface(myCustomFont_montserrat_regular);
         updatedNameTxt.setTypeface(myCustomFont_montserrat_bold);
 
-        CustomerReferralObject s = (CustomerReferralObject) this.getItem(position);
+        final CustomerReferralObject s = (CustomerReferralObject) this.getItem(position);
 
         nameTxt.setText(s.getName());
         phoneTxt.setText(s.getPhone());
         emailTxt.setText(s.getEmail());
-        updatedNameTxt.setText(s.getUpdated_name());
         statusTxt.setText(s.getStatus());
-//        Glide.with(c).load(s.getProfileImg()).into(submittedByImg);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                .child(Configs.users)
+                .child(s.getUpdated_uid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                updatedNameTxt.setText(dataSnapshot.child(Configs.name).getValue(String.class));
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                storageRef.child(dataSnapshot.child(Configs.profile_image).getValue(String.class)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(c).load(uri).into(profileImg);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(c, exception+"", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return convertView;
     }

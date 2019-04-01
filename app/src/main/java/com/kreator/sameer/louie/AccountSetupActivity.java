@@ -53,8 +53,7 @@ public class AccountSetupActivity extends AppCompatActivity {
     TextView mainTxt,customerSelectBtn,contractorSelectBtn;
     ArrayAdapter<CharSequence> paymentAdapter;
     Spinner paymentMethod,pickFirmSpin;
-    TextView paymentTxt,paypalTxt;
-    EditText paypalEdit;
+    TextView paymentTxt;
     RelativeLayout customerLayout,contractorLayout;
     ImageView customerFloat;
     TextView contPickteamTxt,contOrTxt,contCreateTxt,contUploadTxt;
@@ -85,8 +84,6 @@ public class AccountSetupActivity extends AppCompatActivity {
         customerSelectBtn = (TextView)findViewById(R.id.accountsetup_customerSelectTxt);
         contractorSelectBtn = (TextView)findViewById(R.id.accountsetup_contractorSelectTxt);
         paymentTxt = (TextView)findViewById(R.id.accountsetup_customer_paymentMethodTxt);
-        paypalTxt = (TextView)findViewById(R.id.accountsetup_customer_paypalTxt);
-        paypalEdit = (EditText) findViewById(R.id.accountsetup_customer_paypalEdit);
         customerLayout = (RelativeLayout)findViewById(R.id.accountsetup_customerLayout);
         contractorLayout = (RelativeLayout)findViewById(R.id.accountsetup_contractorLayout);
         customerFloat = (ImageView)findViewById(R.id.accountsetup_customer_floatNxt);
@@ -142,8 +139,6 @@ public class AccountSetupActivity extends AppCompatActivity {
         customerSelectBtn.setTypeface(myCustomFont_montserrat_regular);
         contractorSelectBtn.setTypeface(myCustomFont_montserrat_regular);
         paymentTxt.setTypeface(myCustomFont_montserrat_regular);
-        paypalTxt.setTypeface(myCustomFont_montserrat_regular);
-        paypalEdit.setTypeface(myCustomFont_montserrat_regular);
 
         contPickteamTxt.setTypeface(myCustomFont_montserrat_regular);
         contOrTxt.setTypeface(myCustomFont_montserrat_regular);
@@ -159,27 +154,6 @@ public class AccountSetupActivity extends AppCompatActivity {
         }
         customerLayout.setVisibility(View.VISIBLE);
         contractorLayout.setVisibility(View.GONE);
-
-        paymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        paypalTxt.setVisibility(View.GONE);
-                        paypalEdit.setVisibility(View.GONE);
-                        break;
-                    case 1:
-                        paypalTxt.setVisibility(View.VISIBLE);
-                        paypalEdit.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         customerSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,63 +193,57 @@ public class AccountSetupActivity extends AppCompatActivity {
 
     public void setCustomerAccount(){
 
-        if(paymentMethod.getSelectedItem().toString().equals("PayPal") && (paypalEdit.getText().toString().isEmpty() || paypalEdit.getText().toString().equals(""))){
-            Toast.makeText(this, "Enter PayPal URL", Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
-            loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            loadDialog.setContentView(R.layout.loading_one);
-            loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+        final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
+        loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loadDialog.setContentView(R.layout.loading_one);
+        loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
 
-                @Override
-                public boolean onKey(DialogInterface arg0, int keyCode,
-                                     KeyEvent event) {
-                    // TODO Auto-generated method stub
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        loadDialog.dismiss();
-                    }
-                    return true;
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    loadDialog.dismiss();
                 }
-            });
-            LottieAnimationView animSelect;
-            animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
-            loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            animSelect.setAnimation("blueline.json");
-            animSelect.playAnimation();
-            animSelect.loop(true);
-
-            Window window = loadDialog.getWindow();
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            loadDialog.show();
-
-            HashMap hm = new HashMap();
-            hm.put(Configs.accountsetup_done,true);
-            hm.put(Configs.account_type,Configs.customer_type_account);
-            if (paymentMethod.getSelectedItem().toString().equals("Cash"))
-                hm.put(Configs.payment_mode,Configs.cash_type_payment);
-            else if (paymentMethod.getSelectedItem().toString().equals("PayPal")) {
-                hm.put(Configs.payment_mode, Configs.paypal_type_payment);
-                hm.put(Configs.paypal_link, paypalEdit.getText().toString());
+                return true;
             }
-            db = FirebaseDatabase.getInstance().getReference();
-            db.child(Configs.users)
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        startActivity(new Intent(AccountSetupActivity.this,SplashActivity.class));
-                        finish();
-                    }else {
-                        Toast.makeText(AccountSetupActivity.this, "Failed to set account type!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+        });
+        LottieAnimationView animSelect;
+        animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
+        loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        animSelect.setAnimation("blueline.json");
+        animSelect.playAnimation();
+        animSelect.loop(true);
 
+        Window window = loadDialog.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        loadDialog.show();
+
+        HashMap hm = new HashMap();
+        hm.put(Configs.accountsetup_done,true);
+        hm.put(Configs.account_type,Configs.customer_type_account);
+        if (paymentMethod.getSelectedItem().toString().equals("Cash"))
+            hm.put(Configs.payment_mode,Configs.cash_type_payment);
+        else if (paymentMethod.getSelectedItem().toString().equals("PayPal")) {
+            hm.put(Configs.payment_mode, Configs.paypal_type_payment);
         }
+        db = FirebaseDatabase.getInstance().getReference();
+        db.child(Configs.users)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    startActivity(new Intent(AccountSetupActivity.this,SplashActivity.class));
+                    finish();
+                }else {
+                    Toast.makeText(AccountSetupActivity.this, "Failed to set account type!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     public void setContractorAccount_joinFirm(final String firmKey){
@@ -391,17 +359,16 @@ public class AccountSetupActivity extends AppCompatActivity {
             loadDialog.show();
 
             final String saltString = getSaltString();
-
-            StorageReference mStorageRef;
-            mStorageRef = FirebaseStorage.getInstance().getReference();
-            StorageReference ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri));
+            final String fileName = FirebaseAuth.getInstance().getCurrentUser().getUid()+FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri);
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference ref = mStorageRef.child(fileName);
             ref.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     HashMap s = new HashMap();
                     s.put("firm_name",contContractorNameEdit.getText().toString());
                     s.put("firm_key",saltString);
-                    s.put("firm_logo",taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                    s.put("firm_logo",fileName);
                     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference dbin = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();

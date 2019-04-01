@@ -208,43 +208,18 @@ public class CustomerReferralFrag extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 adapter.spacecrafts.clear();
-
                 adapter.notifyDataSetChanged();
-
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
-
                     if (ds.child(Configs.referral_submitted_uid).getValue(String.class).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){      //Check whether current referral was sent by this customer
-
-                        final String name = ds.child(Configs.referral_name).getValue(String.class);
-                        final String phone = ds.child(Configs.referral_phone).getValue(String.class);
-                        final String email = ds.child(Configs.referral_email).getValue(String.class);
-                        final String status = ds.child(Configs.referral_status).getValue(String.class);
-
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
-                                .child(Configs.users)
-                                .child(ds.child(Configs.referral_updated_uid).getValue(String.class));
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                adapter.spacecrafts.add(new CustomerReferralObject(
-                                        name,
-                                        phone,
-                                        email,
-                                        status,
-                                        dataSnapshot.child(Configs.name).getValue(String.class),
-                                        dataSnapshot.child(Configs.profile_image).getValue(String.class)
-                                ));
-                                adapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
+                        adapter.spacecrafts.add(new CustomerReferralObject(
+                                ds.child(Configs.referral_name).getValue(String.class),
+                                ds.child(Configs.referral_phone).getValue(String.class),
+                                ds.child(Configs.referral_email).getValue(String.class),
+                                ds.child(Configs.referral_status).getValue(String.class),
+                                ds.child(Configs.referral_updated_uid).getValue(String.class)
+                        ));
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }

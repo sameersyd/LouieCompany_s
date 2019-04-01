@@ -160,6 +160,7 @@ public class ContractorCustomerFrag extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     retrieve(ds.getRef().getKey());
                 }
+                loadDialog.dismiss();
             }
 
             @Override
@@ -187,7 +188,6 @@ public class ContractorCustomerFrag extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                loadDialog.dismiss();
             }
         });
     }

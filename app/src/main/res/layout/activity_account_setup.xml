@@ -66,7 +66,7 @@
         android:id="@+id/accountsetup_customerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_below="@id/accountsetup_selectionLayout">
 
         <TextView
@@ -89,33 +89,6 @@
             android:layout_below="@id/accountsetup_customer_paymentMethodTxt"
             android:background="@drawable/custom_edittext"/>
 
-        <TextView
-            android:id="@+id/accountsetup_customer_paypalTxt"
-            android:layout_below="@id/accountsetup_customer_paymentMethodSpin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:textColor="#a7a7a8"
-            android:text="Enter your PayPal URL"
-            android:textSize="16dp"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
-
-        <EditText
-            android:id="@+id/accountsetup_customer_paypalEdit"
-            android:layout_below="@id/accountsetup_customer_paypalTxt"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:paddingLeft="16dp"
-            android:textCursorDrawable="@null"
-            android:inputType="textCapWords"
-            android:visibility="gone"
-            android:textColor="#ffffff"
-            android:background="@drawable/custom_edittext"/>
-
         <ImageView
             android:id="@+id/accountsetup_customer_floatNxt"
             android:layout_width="64dp"
@@ -123,7 +96,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:src="@drawable/floating_red"
-            android:layout_below="@id/accountsetup_customer_paypalEdit"/>
+            android:layout_below="@id/accountsetup_customer_paymentMethodSpin"/>
 
     </RelativeLayout>
 
@@ -131,7 +104,8 @@
         android:id="@+id/accountsetup_contractorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/accountsetup_selectionLayout">
+        android:layout_below="@id/accountsetup_selectionLayout"
+        android:visibility="gone">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -260,6 +234,7 @@
                     android:layout_marginRight="20dp"
                     android:paddingLeft="16dp"
                     android:textSize="16dp"
+                    android:inputType="textCapWords"
                     android:hint="Name of the contracting account"
                     android:textCursorDrawable="@null"
                     android:textColor="#ffffff"

@@ -3,6 +3,8 @@ package com.kreator.sameer.louie.Contractor;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kreator.sameer.louie.PayActivity;
 import com.kreator.sameer.louie.R;
+import com.kreator.sameer.louie.ViewContractor.ViewContractorActivity;
 
 import java.util.ArrayList;
 
@@ -49,7 +58,7 @@ public class ContractorCustomerCustomadapter extends BaseAdapter {
         TextView phoneTxt = (TextView)convertView.findViewById(R.id.contCustList_phoneTxt);
         TextView emailTxt = (TextView)convertView.findViewById(R.id.contCustList_emailTxt);
 
-        ImageView profileImg = (ImageView)convertView.findViewById(R.id.contCustList_profileImg);
+        final ImageView profileImg = (ImageView)convertView.findViewById(R.id.contCustList_profileImg);
         Button payButton = (Button)convertView.findViewById(R.id.contCustList_payBtn);
 
         nameTxt.setTypeface(myCustomFont_montserrat_bold);
@@ -71,7 +80,19 @@ public class ContractorCustomerCustomadapter extends BaseAdapter {
         nameTxt.setText(s.getName());
         phoneTxt.setText(s.getPhone());
         emailTxt.setText(s.getEmail());
-//        Glide.with(c).load(s.getProfileImg()).into(submittedByImg);
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        storageRef.child(s.getProfilePic()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(c).load(uri).into(profileImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(c, exception+"", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return convertView;
     }
