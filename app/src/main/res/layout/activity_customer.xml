@@ -12,12 +12,43 @@
         android:layout_height="match_parent"
         android:background="@drawable/view_gradient"/>
 
-    <ImageView
-        android:id="@+id/customer_mainImage"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
-        android:src="@drawable/louie_small"
-        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:id="@+id/customer_real"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/customer_mainImage"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:src="@drawable/louie_small"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/customer_mainImageCircular"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="#768392"
+            android:visibility="invisible"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/customer_mainTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="The Boring"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/customer_selectionLayout"
@@ -25,7 +56,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginBottom="15dp"
-        android:layout_below="@id/customer_mainImage">
+        android:layout_below="@id/customer_real">
 
         <TextView
             android:id="@+id/customer_contractorSelect"

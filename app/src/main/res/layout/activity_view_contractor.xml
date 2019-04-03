@@ -53,10 +53,25 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:src="#984672"
+        android:visibility="invisible"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contProfile_contNameTxt" />
+
+    <TextView
+        android:id="@+id/contProfile_contTeamTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="18dp"
+        android:visibility="invisible"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/contProfile_contTeamImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contProfile_contTeamImg" />
 
     <TextView
         android:id="@+id/contProfile_theTeam"

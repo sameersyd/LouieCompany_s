@@ -84,6 +84,8 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpin.setAdapter(statusAdapter);
 
+        submittedByImg.setImageDrawable(null);
+
         nameTxt.setTypeface(myCustomFont_montserrat_regular);
         phoneTxt.setTypeface(myCustomFont_montserrat_regular);
         emailTxt.setTypeface(myCustomFont_montserrat_regular);
@@ -120,7 +122,7 @@ public class ContractorReferralsCustomadapter extends BaseAdapter {
         DatabaseReference img = ref
                 .child(Configs.users)
                 .child(s.getReferral_submitted_uid());
-        img.addValueEventListener(new ValueEventListener() {
+        img.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 submittedByTxt.setText(dataSnapshot.child(Configs.name).getValue(String.class));

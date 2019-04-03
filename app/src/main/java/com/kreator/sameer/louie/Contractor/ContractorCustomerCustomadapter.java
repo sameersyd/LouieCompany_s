@@ -61,6 +61,8 @@ public class ContractorCustomerCustomadapter extends BaseAdapter {
         final ImageView profileImg = (ImageView)convertView.findViewById(R.id.contCustList_profileImg);
         Button payButton = (Button)convertView.findViewById(R.id.contCustList_payBtn);
 
+        profileImg.setImageDrawable(null);
+
         nameTxt.setTypeface(myCustomFont_montserrat_bold);
         phoneTxt.setTypeface(myCustomFont_montserrat_regular);
         emailTxt.setTypeface(myCustomFont_montserrat_regular);

@@ -114,7 +114,7 @@ public class PayActivity extends AppCompatActivity {
                     payBtn.setVisibility(View.VISIBLE);
                     cashTxt.setVisibility(View.INVISIBLE);
 
-                    recEmail = dataSnapshot.child(Configs.email).getValue(String.class);
+                    recEmail = dataSnapshot.child(Configs.paypal_email).getValue(String.class);
                     recAmount = amountEdit.getText().toString();
                     recDesc = "Payment from "+getString(R.string.app_name);
 

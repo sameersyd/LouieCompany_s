@@ -76,6 +76,8 @@ public class CustomerReferralCustomadapter extends BaseAdapter {
         updatedPlainTxt.setTypeface(myCustomFont_montserrat_regular);
         updatedNameTxt.setTypeface(myCustomFont_montserrat_bold);
 
+        profileImg.setImageDrawable(null);
+
         final CustomerReferralObject s = (CustomerReferralObject) this.getItem(position);
 
         nameTxt.setText(s.getName());

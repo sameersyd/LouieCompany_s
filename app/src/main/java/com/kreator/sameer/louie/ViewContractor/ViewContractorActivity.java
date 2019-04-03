@@ -44,7 +44,7 @@ public class ViewContractorActivity extends AppCompatActivity {
 
     String firmKey;
     ImageView closeImg,teamImg;
-    TextView nameTxt,reportPlainTxt,theTeamTxt,contPlainTxt;
+    TextView nameTxt,reportPlainTxt,theTeamTxt,contPlainTxt,teamNameTxt;
     RelativeLayout reportBtn;
 
     Dialog loadDialog;
@@ -69,6 +69,7 @@ public class ViewContractorActivity extends AppCompatActivity {
         theTeamTxt = (TextView)findViewById(R.id.contProfile_theTeam);
         reportBtn = (RelativeLayout)findViewById(R.id.contProfile_reportRela);
         teamImg = (ImageView)findViewById(R.id.contProfile_contTeamImg);
+        teamNameTxt = (TextView)findViewById(R.id.contProfile_contTeamTxt);
         closeImg = (ImageView)findViewById(R.id.contProfile_closeImg);
         closeImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +92,7 @@ public class ViewContractorActivity extends AppCompatActivity {
         nameTxt.setTypeface(myCustomFont_montserrat_bold);
         theTeamTxt.setTypeface(myCustomFont_montserrat_bold);
         reportPlainTxt.setTypeface(myCustomFont_montserrat_regular);
+        teamNameTxt.setTypeface(myCustomFont_montserrat_regular);
 
         loadDialog = new Dialog(this);
         loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -130,18 +132,31 @@ public class ViewContractorActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                storageRef.child(dataSnapshot.child("firm_logo").getValue(String.class)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Glide.with(ViewContractorActivity.this).load(uri).into(teamImg);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(ViewContractorActivity.this, exception+"", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                if (dataSnapshot.child(Configs.firm_logo_boo).getValue(Boolean.class)){
+
+                    teamNameTxt.setVisibility(View.INVISIBLE);
+                    teamImg.setVisibility(View.VISIBLE);
+
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    storageRef.child(dataSnapshot.child("firm_logo").getValue(String.class)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(ViewContractorActivity.this).load(uri).into(teamImg);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(ViewContractorActivity.this, exception+"", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }else {
+                    teamNameTxt.setVisibility(View.VISIBLE);
+                    teamImg.setVisibility(View.INVISIBLE);
+                    teamNameTxt.setText(dataSnapshot.child(Configs.firm_name).getValue(String.class));
+                }
+
             }
 
             @Override

@@ -53,11 +53,11 @@ public class AccountSetupActivity extends AppCompatActivity {
     TextView mainTxt,customerSelectBtn,contractorSelectBtn;
     ArrayAdapter<CharSequence> paymentAdapter;
     Spinner paymentMethod,pickFirmSpin;
-    TextView paymentTxt;
+    TextView paymentTxt,paypalTxt;
     RelativeLayout customerLayout,contractorLayout;
     ImageView customerFloat;
     TextView contPickteamTxt,contOrTxt,contCreateTxt,contUploadTxt;
-    EditText contContractorNameEdit;
+    EditText contContractorNameEdit,paypalEdit;
     ImageView contLogoImg,contJoinFirm,contCreateFirm;
 
     FirebaseAuth auth;
@@ -71,11 +71,20 @@ public class AccountSetupActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 1234;
     private Uri imgUri;
 
+    boolean editAccountSetup_boo = false;
+    String editAccountSetup_account_type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setup);
         auth = FirebaseAuth.getInstance();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            editAccountSetup_boo = extras.getBoolean("editAccountSetup");
+            editAccountSetup_account_type = extras.getString("account_type");
+        }
 
         dbFirms = FirebaseDatabase.getInstance().getReference().child(Configs.firms);
         retrieveFirms();
@@ -97,6 +106,8 @@ public class AccountSetupActivity extends AppCompatActivity {
         contJoinFirm = (ImageView)findViewById(R.id.accountsetup_contractor_pickFirmFloat);
         contCreateFirm = (ImageView)findViewById(R.id.accountsetup_contractor_newFirmFloat);
         pickFirmSpin = (Spinner)findViewById(R.id.accountsetup_contractor_pickTeamSpin);
+        paypalTxt = (TextView)findViewById(R.id.accountsetup_customer_paypalTxt);
+        paypalEdit = (EditText) findViewById(R.id.accountsetup_customer_paypalEdit);
 
         contLogoImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,12 +124,16 @@ public class AccountSetupActivity extends AppCompatActivity {
         contJoinFirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editAccountSetup_boo)
+                    removeFromCurrentFirm();
                 setContractorAccount_joinFirm(firmKeysList.get(pickFirmSpin.getSelectedItemPosition()));
             }
         });
         contCreateFirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editAccountSetup_boo)
+                    removeFromCurrentFirm();
                 setContractorAccount_createFirm();
             }
         });
@@ -145,15 +160,8 @@ public class AccountSetupActivity extends AppCompatActivity {
         contCreateTxt.setTypeface(myCustomFont_montserrat_regular);
         contUploadTxt.setTypeface(myCustomFont_montserrat_regular);
         contContractorNameEdit.setTypeface(myCustomFont_montserrat_regular);
-
-        customerSelectBtn.setBackground(getDrawable(R.drawable.accountsetup_selected));
-        contractorSelectBtn.setBackground(getDrawable(R.drawable.accountsetup_unselected));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            customerSelectBtn.setTextColor(getColor(R.color.white_color));
-            contractorSelectBtn.setTextColor(getColor(R.color.accountsetup_unselect));
-        }
-        customerLayout.setVisibility(View.VISIBLE);
-        contractorLayout.setVisibility(View.GONE);
+        paypalTxt.setTypeface(myCustomFont_montserrat_regular);
+        paypalEdit.setTypeface(myCustomFont_montserrat_regular);
 
         customerSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +175,45 @@ public class AccountSetupActivity extends AppCompatActivity {
                 contractorSelected();
             }
         });
+
+        paymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        paypalTxt.setVisibility(View.GONE);
+                        paypalEdit.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        paypalTxt.setVisibility(View.VISIBLE);
+                        paypalEdit.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        if (editAccountSetup_boo){
+            if (editAccountSetup_account_type.equals(Configs.customer_type_account)){
+                editAccountSetup_customer();
+            }else if (editAccountSetup_account_type.equals(Configs.contractor_type_account)){
+                editAccountSetup_contractor();
+            }
+        }else {
+            customerSelectBtn.setBackground(getDrawable(R.drawable.accountsetup_selected));
+            contractorSelectBtn.setBackground(getDrawable(R.drawable.accountsetup_unselected));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                customerSelectBtn.setTextColor(getColor(R.color.white_color));
+                contractorSelectBtn.setTextColor(getColor(R.color.accountsetup_unselect));
+            }
+            customerLayout.setVisibility(View.VISIBLE);
+            contractorLayout.setVisibility(View.GONE);
+        }
+
     }
 
     public void customerSelected(){
@@ -193,56 +240,62 @@ public class AccountSetupActivity extends AppCompatActivity {
 
     public void setCustomerAccount(){
 
-        final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
-        loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        loadDialog.setContentView(R.layout.loading_one);
-        loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+        if(paymentMethod.getSelectedItem().toString().equals("PayPal") && (paypalEdit.getText().toString().isEmpty() || paypalEdit.getText().toString().equals(""))){
+            Toast.makeText(this, "Enter PayPal Email", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
+            loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            loadDialog.setContentView(R.layout.loading_one);
+            loadDialog.setOnKeyListener(new Dialog.OnKeyListener() {
 
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    loadDialog.dismiss();
+                @Override
+                public boolean onKey(DialogInterface arg0, int keyCode,
+                                     KeyEvent event) {
+                    // TODO Auto-generated method stub
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        loadDialog.dismiss();
+                    }
+                    return true;
                 }
-                return true;
+            });
+            LottieAnimationView animSelect;
+            animSelect = (LottieAnimationView) loadDialog.findViewById(R.id.loading_one);
+            loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            animSelect.setAnimation("blueline.json");
+            animSelect.playAnimation();
+            animSelect.loop(true);
+
+            Window window = loadDialog.getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            loadDialog.show();
+
+            HashMap hm = new HashMap();
+            hm.put(Configs.accountsetup_done, true);
+            hm.put(Configs.account_type, Configs.customer_type_account);
+            if (paymentMethod.getSelectedItem().toString().equals("Cash"))
+                hm.put(Configs.payment_mode, Configs.cash_type_payment);
+            else if (paymentMethod.getSelectedItem().toString().equals("PayPal")) {
+                hm.put(Configs.payment_mode, Configs.paypal_type_payment);
+                hm.put(Configs.paypal_email, paypalEdit.getText().toString());
             }
-        });
-        LottieAnimationView animSelect;
-        animSelect = (LottieAnimationView)loadDialog.findViewById(R.id.loading_one);
-        loadDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        animSelect.setAnimation("blueline.json");
-        animSelect.playAnimation();
-        animSelect.loop(true);
-
-        Window window = loadDialog.getWindow();
-        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        loadDialog.show();
-
-        HashMap hm = new HashMap();
-        hm.put(Configs.accountsetup_done,true);
-        hm.put(Configs.account_type,Configs.customer_type_account);
-        if (paymentMethod.getSelectedItem().toString().equals("Cash"))
-            hm.put(Configs.payment_mode,Configs.cash_type_payment);
-        else if (paymentMethod.getSelectedItem().toString().equals("PayPal")) {
-            hm.put(Configs.payment_mode, Configs.paypal_type_payment);
+            db = FirebaseDatabase.getInstance().getReference();
+            db.child(Configs.users)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        startActivity(new Intent(AccountSetupActivity.this, SplashActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(AccountSetupActivity.this, "Failed to set account type!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
-        db = FirebaseDatabase.getInstance().getReference();
-        db.child(Configs.users)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    startActivity(new Intent(AccountSetupActivity.this,SplashActivity.class));
-                    finish();
-                }else {
-                    Toast.makeText(AccountSetupActivity.this, "Failed to set account type!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
     }
 
@@ -326,10 +379,7 @@ public class AccountSetupActivity extends AppCompatActivity {
         if (contContractorNameEdit.getText().toString().equals("") || contContractorNameEdit.getText().toString().isEmpty()){
             Toast.makeText(this, "Enter account name", Toast.LENGTH_SHORT).show();
             return;
-        } else if (imgUri == null){
-            Toast.makeText(this, "Select Logo", Toast.LENGTH_SHORT).show();
-            return;
-        }else {
+        } else {
             final Dialog loadDialog = new Dialog(AccountSetupActivity.this);
             loadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             loadDialog.setContentView(R.layout.loading_one);
@@ -358,70 +408,12 @@ public class AccountSetupActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             loadDialog.show();
 
-            final String saltString = getSaltString();
-            final String fileName = FirebaseAuth.getInstance().getCurrentUser().getUid()+FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri);
-            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-            StorageReference ref = mStorageRef.child(fileName);
-            ref.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    HashMap s = new HashMap();
-                    s.put("firm_name",contContractorNameEdit.getText().toString());
-                    s.put("firm_key",saltString);
-                    s.put("firm_logo",fileName);
-                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                    final DatabaseReference dbin = FirebaseDatabase.getInstance().getReference();
-                    final DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();
+            if (imgUri != null){
+                withLogo();
+            }else {
+                noLogo();
+            }
 
-                    db.child(Configs.firms).child(saltString).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                dbin.child(Configs.firms)
-                                        .child(saltString)
-                                        .child("members")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(true)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            HashMap hsm = new HashMap();
-                                            hsm.put(Configs.accountsetup_done,true);
-                                            hsm.put(Configs.account_type,Configs.contractor_type_account);
-                                            hsm.put(Configs.firm_key,saltString);
-                                            dbChang.child(Configs.users)
-                                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                    .updateChildren(hsm).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()){
-                                                        Toast.makeText(AccountSetupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(AccountSetupActivity.this, SplashActivity.class));
-                                                        finish();
-                                                    }
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(AccountSetupActivity.this, e+"", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                        } else {
-                                            Toast.makeText(AccountSetupActivity.this, "Firm creation failed", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(AccountSetupActivity.this, e + "", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            });
         }
 
     }
@@ -503,6 +495,197 @@ public class AccountSetupActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void editAccountSetup_customer(){
+        customerSelected();
+        customerSelectBtn.setEnabled(false);
+        contractorSelectBtn.setEnabled(false);
+
+        DatabaseReference pal = FirebaseDatabase.getInstance().getReference();
+        pal.child(Configs.users)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(Configs.paypal_email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    paypalEdit.setText(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AccountSetupActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void editAccountSetup_contractor(){
+        contractorSelected();
+        customerSelectBtn.setEnabled(false);
+        contractorSelectBtn.setEnabled(false);
+    }
+
+    public void removeFromCurrentFirm(){
+
+        final DatabaseReference rem = FirebaseDatabase.getInstance().getReference();
+        rem.child(Configs.users).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(Configs.firm_key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                rem.child(Configs.firms)
+                        .child(dataSnapshot.getValue(String.class))
+                        .child("members")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(AccountSetupActivity.this, "Removed from previous team!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(AccountSetupActivity.this, task.getException()+"", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AccountSetupActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+
+
+    }
+
+    public void noLogo(){
+
+        final String saltString = getSaltString();
+
+        HashMap s = new HashMap();
+        s.put(Configs.firm_name,contContractorNameEdit.getText().toString());
+        s.put(Configs.firm_key,saltString);
+        s.put(Configs.firm_logo_boo,false);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference dbin = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();
+
+        db.child(Configs.firms).child(saltString).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    dbin.child(Configs.firms)
+                            .child(saltString)
+                            .child("members")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(true)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        HashMap hsm = new HashMap();
+                                        hsm.put(Configs.accountsetup_done,true);
+                                        hsm.put(Configs.account_type,Configs.contractor_type_account);
+                                        hsm.put(Configs.firm_key,saltString);
+                                        dbChang.child(Configs.users)
+                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .updateChildren(hsm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    Toast.makeText(AccountSetupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(AccountSetupActivity.this, SplashActivity.class));
+                                                    finish();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(AccountSetupActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(AccountSetupActivity.this, "Firm creation failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AccountSetupActivity.this, e + "", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void withLogo(){
+        final String saltString = getSaltString();
+        final String fileName = FirebaseAuth.getInstance().getCurrentUser().getUid()+FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imgUri);
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference ref = mStorageRef.child(fileName);
+        ref.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                HashMap s = new HashMap();
+                s.put(Configs.firm_name,contContractorNameEdit.getText().toString());
+                s.put(Configs.firm_key,saltString);
+                s.put(Configs.firm_logo,fileName);
+                s.put(Configs.firm_logo_boo,true);
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference dbin = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference dbChang = FirebaseDatabase.getInstance().getReference();
+
+                db.child(Configs.firms).child(saltString).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            dbin.child(Configs.firms)
+                                    .child(saltString)
+                                    .child("members")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(true)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                HashMap hsm = new HashMap();
+                                                hsm.put(Configs.accountsetup_done,true);
+                                                hsm.put(Configs.account_type,Configs.contractor_type_account);
+                                                hsm.put(Configs.firm_key,saltString);
+                                                dbChang.child(Configs.users)
+                                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                        .updateChildren(hsm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()){
+                                                            Toast.makeText(AccountSetupActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                                                            startActivity(new Intent(AccountSetupActivity.this, SplashActivity.class));
+                                                            finish();
+                                                        }
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(AccountSetupActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            } else {
+                                                Toast.makeText(AccountSetupActivity.this, "Firm creation failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AccountSetupActivity.this, e + "", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
     }
 
 }
